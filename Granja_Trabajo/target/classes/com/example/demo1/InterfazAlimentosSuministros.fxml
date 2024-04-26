@@ -28,12 +28,21 @@
               <Label id="labelCantidad" prefHeight="17.0" prefWidth="97.0" text="Cantidad" textFill="#237539" GridPane.columnIndex="1" GridPane.rowIndex="3" />
               <Label id="labelSalario" prefHeight="17.0" prefWidth="90.0" text="Precio" textFill="#237539" GridPane.columnIndex="1" GridPane.rowIndex="6" />
               <TextField id="fieldPrecio" fx:id="textFieldSalario" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-              <Button id="buttonInsertar" maxWidth="157.0" minWidth="0" onAction="#inserTarDatos" prefHeight="86.0" prefWidth="149.0" text="Insertar" textFill="#f20a0a" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+              <Button id="buttonInsertar" maxWidth="157.0" minWidth="0" onAction="#inserTarDatos" prefHeight="86.0" prefWidth="149.0" text="Insertar" textFill="#f20a0a" GridPane.columnIndex="1" GridPane.rowIndex="9">
+            <font>
+               <Font name="System Bold" size="28.0" />
+            </font>
+         </Button>
               <Button id="buttonCargarDatos" maxWidth="259.0" minWidth="0" onAction="#cargarDatos" prefHeight="9.0" prefWidth="100.0" text="Cargar datos" GridPane.columnIndex="4" GridPane.hgrow="NEVER" GridPane.rowIndex="9" GridPane.vgrow="ALWAYS" />
          <TextField id="fieldCantidad" fx:id="textFieldNombre1" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          <ImageView fitHeight="159.0" fitWidth="320.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="5">
             <image>
                <Image url="@../../../../../../../../2024-04-26%2016_10_58-alimentos%20y%20suministros%20de%20granja%20-%20Buscar%20con%20Google.png" />
+            </image>
+         </ImageView>
+         <ImageView fitHeight="165.0" fitWidth="324.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="5">
+            <image>
+               <Image url="@../../../../../../../../2024-04-26%2016_21_01-alimentos%20y%20suministros%20de%20granja%20-%20Buscar%20con%20Google.png" />
             </image>
          </ImageView>
               <columnConstraints>
