@@ -15,16 +15,18 @@ import java.sql.SQLException;
 
 public class HelloController {
 
+    public Button botonLogIn;
     @FXML
     private TextField nombreTxtF;
     @FXML
     private Label welcomeText;
     @FXML
-    private Button BotonLogin;
-    @FXML
     private HelloApplication a;
+    public HelloController()
+    {
+        a = new HelloApplication();
+    }
     @FXML
-
     protected void onHelloButtonClick() {
         Alert error = new Alert(Alert.AlertType.ERROR);
         error.setTitle("Error");
@@ -34,7 +36,7 @@ public class HelloController {
     }
 
     @FXML
-    protected void ComprobarUsuario() throws SQLException {
+    protected boolean ComprobarUsuario() throws SQLException {
         ConexionBBDD connection = new ConexionBBDD();
 
         connection.statement.execute("use granja");
@@ -45,19 +47,25 @@ public class HelloController {
             String nombreEnBaseDeDatos = resultSet.getString("Nombre");
             if (nombreEnBaseDeDatos.equals(nombre)) {
                 System.out.println("Usuario correcto");
+                return true;
             }
         } else {
             System.out.println("Usuario no encontrado");
+            return false;
         }
-
-
+        return false;
     }
     @FXML
-    protected void loginButton(ActionEvent event) throws IOException {
-        cerrarVentana(event);
-        a = new HelloApplication();
-        onHelloButtonClick();
-        a.mostrarVentanaSecundaria();
+    protected void loginButton(ActionEvent event) throws SQLException {
+        if (ComprobarUsuario())
+        {
+            cerrarVentana(event);
+            a.mostrarVentanaSecundaria();
+        }
+        else
+        {
+            onHelloButtonClick();
+        }
     }
     public static void cerrarVentana(ActionEvent e) {
         Node source = (Node) e.getSource();     //Me devuelve el elemento al que hice click

@@ -20,8 +20,9 @@ public class HelloApplication extends Application {
         stagePrincipal = new Stage();
     }
     @Override
-    public void start(Stage stagePrincipal) throws Exception {
+    public void start(Stage stagePrincipal) {
         this.stagePrincipal = stagePrincipal;
+        mostrarVentanaSecundaria();
         mostrarVentanaPrincipal();
     }
     public void mostrarVentanaPrincipal() {
@@ -36,7 +37,6 @@ public class HelloApplication extends Application {
     }
     public void mostrarVentanaSecundaria() {
         try {
-            stagePrincipal.close();
             FXMLLoader loader = new FXMLLoader(Alimentacion.class.getResource("alimentacion.fxml"));
             Scene scene = new Scene(loader.load(), 800, 600);
             stagePrincipal.setTitle("Granja");
