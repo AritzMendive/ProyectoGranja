@@ -25,7 +25,7 @@
          <Insets left="30.0" right="450.0" top="10.0" />
       </VBox.margin>
    </PasswordField>
-   <Button fx:id="botonLogIn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onHelloButtonClick" text="Log In">
+   <Button fx:id="botonLogIn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#loginButton" text="Log In">
       <VBox.margin>
          <Insets left="275.0" top="150.0" />
       </VBox.margin>

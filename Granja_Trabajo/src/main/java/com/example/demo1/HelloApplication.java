@@ -13,13 +13,38 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class HelloApplication extends Application {
+    private Stage stagePrincipal;
+    //private Stage dos;
+    public HelloApplication()
+    {
+        stagePrincipal = new Stage();
+    }
     @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
-        stage.setTitle("Granja");
-        stage.setScene(scene);
-        stage.show();
+    public void start(Stage stagePrincipal) throws Exception {
+        this.stagePrincipal = stagePrincipal;
+        mostrarVentanaPrincipal();
+    }
+    public void mostrarVentanaPrincipal() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+            stagePrincipal.setTitle("Granja");
+            stagePrincipal.setScene(scene);
+            stagePrincipal.show();
+        } catch (IOException ignored) {
+        }
+    }
+    public void mostrarVentanaSecundaria() {
+        try {
+            stagePrincipal.close();
+            FXMLLoader loader = new FXMLLoader(Alimentacion.class.getResource("alimentacion.fxml"));
+            Scene scene = new Scene(loader.load(), 800, 600);
+            stagePrincipal.setTitle("Granja");
+            stagePrincipal.setScene(scene);
+            stagePrincipal.show();
+
+        } catch (Exception ignored) {
+        }
     }
 
     public static void main(String[] args) throws FileNotFoundException, SQLException {
