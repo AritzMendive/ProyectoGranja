@@ -9,10 +9,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class HelloApplication extends Application {
@@ -25,32 +22,9 @@ public class HelloApplication extends Application {
         stage.show();
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
-        BufferedReader br = new BufferedReader(new FileReader("src/main/BBDD/granja.sql"));
-
-        try {
-            String st;
-            ArrayList<String> lineas = new ArrayList<>();
-            while((st = br.readLine()) != null){
-                lineas.add(st);
-            }
-
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/", "root", "root");
-            Statement statement = connection.createStatement();
-            for(String linea : lineas){
-                statement.executeUpdate(linea);
-            }
-/*
-            ResultSet resultSet = statement.executeQuery("select * from alimentos");
-            while (resultSet.next()) {
-                System.out.println(resultSet.getString("Nombre"));
-                System.out.println(resultSet.getString("Stock"));
-            }
-*/
-
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
+    public static void main(String[] args) throws FileNotFoundException, SQLException {
+        ConexionBBDD conexion = new ConexionBBDD();
+        conexion.creacionBBDD();
 
         launch();
 

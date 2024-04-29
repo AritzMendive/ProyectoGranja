@@ -10,7 +10,7 @@
          <Insets left="30.0" top="30.0" />
       </VBox.margin>
    </Label>
-   <TextField prefHeight="25.0" prefWidth="410.0">
+   <TextField fx:id="nombreTxtF" prefHeight="25.0" prefWidth="410.0">
       <VBox.margin>
          <Insets left="30.0" right="450.0" top="10.0" />
       </VBox.margin>
