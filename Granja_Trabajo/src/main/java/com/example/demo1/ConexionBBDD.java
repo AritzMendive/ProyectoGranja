@@ -31,11 +31,7 @@ public class ConexionBBDD {
             for (String linea : lineas) {
                 statement.executeUpdate(linea);
             }
-            /*ResultSet resultSet = statement.executeQuery("select * from alimentos");
-            while (resultSet.next()) {
-                System.out.println(resultSet.getString("Nombre"));
-                System.out.println(resultSet.getString("Stock"));
-            }*/
+
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -18,6 +18,9 @@ public class HelloController {
     public Button botonLogIn;
     @FXML
     private TextField nombreTxtF;
+
+    @FXML
+    private TextField contrasenyaTxtF;
     @FXML
     private Label welcomeText;
     @FXML
@@ -41,8 +44,9 @@ public class HelloController {
 
         connection.statement.execute("use granja");
         String nombre = nombreTxtF.getText();
+        String contrasenya = contrasenyaTxtF.getText();
 
-        ResultSet resultSet = connection.statement.executeQuery("select Nombre from usuarios where Nombre = '" + nombre + "'");
+        ResultSet resultSet = connection.statement.executeQuery("select Nombre, Contraseña from usuarios where Nombre = '" + nombre + "' AND Contraseña = '" + contrasenya + "'");
         if (resultSet.next()) {
             String nombreEnBaseDeDatos = resultSet.getString("Nombre");
             if (nombreEnBaseDeDatos.equals(nombre)) {
