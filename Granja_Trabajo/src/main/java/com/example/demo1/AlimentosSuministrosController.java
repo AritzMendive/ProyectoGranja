@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class AlimentosSuministrosController {
+    Connection connection;
 
     @FXML
     private TextField fieldAlimentosSuministros;
@@ -73,6 +74,8 @@ public class AlimentosSuministrosController {
     }
 
     private boolean insertarAlimentoEnBD(String nombre, int stock, int precio) throws SQLException {
+        ConexionBBDD conexion = new ConexionBBDD();
+
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/granja", "root", "root")) {
             String insertSQL = "INSERT INTO alimentos (Nombre, Stock, Precio) VALUES (?, ?, ?)";
             //Se hace la insercion en la base de datos.

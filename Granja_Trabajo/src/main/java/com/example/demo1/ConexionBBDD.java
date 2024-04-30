@@ -38,10 +38,16 @@ public class ConexionBBDD {
         }
     }
 
-    public String selectEnTabla(String tabla, String columna) throws SQLException {
-        ResultSet resultSet = statement.executeQuery("select " + columna + " from " + tabla);
-        return resultSet.getString(columna);
 
-
+    public void migracionClienteProveedor() throws SQLException {
+        statement.execute("CREATE PROCEDURE ActualizarRoles()\n" +
+                "BEGIN\n" +
+                "    UPDATE Usuarios\n" +
+                "    SET Rol = 'Proveedor'\n" +
+                "    WHERE Rol = 'Cliente';\n" +
+                "END");
     }
+
+
+
 }
