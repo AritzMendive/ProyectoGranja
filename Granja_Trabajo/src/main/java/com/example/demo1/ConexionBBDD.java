@@ -31,21 +31,23 @@ public class ConexionBBDD {
             for (String linea : lineas) {
                 statement.executeUpdate(linea);
             }
-            /*ResultSet resultSet = statement.executeQuery("select * from alimentos");
-            while (resultSet.next()) {
-                System.out.println(resultSet.getString("Nombre"));
-                System.out.println(resultSet.getString("Stock"));
-            }*/
+
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public String selectEnTabla(String tabla, String columna) throws SQLException {
-        ResultSet resultSet = statement.executeQuery("select " + columna + " from " + tabla);
-        return resultSet.getString(columna);
 
-
+    public void migracionClienteProveedor() throws SQLException {
+        statement.execute("CREATE PROCEDURE ActualizarRoles()\n" +
+                "BEGIN\n" +
+                "    UPDATE Usuarios\n" +
+                "    SET Rol = 'Proveedor'\n" +
+                "    WHERE Rol = 'Cliente';\n" +
+                "END");
     }
+
+
+
 }
