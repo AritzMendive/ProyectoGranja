@@ -1,33 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.HelloController">
-   <Label prefHeight="30.0" prefWidth="57.0" text="Nombre">
-      <VBox.margin>
-         <Insets left="30.0" top="30.0" />
-      </VBox.margin>
-   </Label>
-   <TextField fx:id="nombreTxtF" prefHeight="25.0" prefWidth="410.0">
-      <VBox.margin>
-         <Insets left="30.0" right="450.0" top="10.0" />
-      </VBox.margin>
-   </TextField>
-   <Label prefWidth="71.0" text="Contraseña">
-      <VBox.margin>
-         <Insets left="30.0" top="30.0" />
-      </VBox.margin>
-   </Label>
-   <PasswordField fx:id="contrasenyaTxtF">
-      <VBox.margin>
-         <Insets left="30.0" right="450.0" top="10.0" />
-      </VBox.margin>
-   </PasswordField>
-   <Button fx:id="botonLogIn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#loginButton" text="Log In">
-      <VBox.margin>
-         <Insets left="275.0" top="150.0" />
-      </VBox.margin>
-   </Button>
-</VBox>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.HelloController">
+   <children>
+      <ImageView fitHeight="230.0" fitWidth="339.0" layoutX="14.0" layoutY="94.0">
+         <image>
+            <Image url="@../../../Imagenes/2024-04-26 16_10_58-alimentos y suministros de granja - Buscar con Google.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="131.0" fitWidth="139.0" layoutX="397.0">
+         <image>
+            <Image url="@../../../Imagenes/6662120.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="botonLogIn" layoutX="424.0" layoutY="312.0" mnemonicParsing="false" onAction="#loginButton" text="Iniciar Sesion" />
+      <PasswordField layoutX="392.0" layoutY="235.0" />
+      <Label layoutX="392.0" layoutY="209.0" text="Contraseña" />
+      <Label layoutX="392.0" layoutY="150.0" text="Nombre" />
+      <TextField fx:id="nombreTxtF" layoutX="392.0" layoutY="175.0" />
+   </children>
+</AnchorPane>

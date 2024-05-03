@@ -18,9 +18,6 @@ public class HelloController {
     public Button botonLogIn;
     @FXML
     private TextField nombreTxtF;
-
-    @FXML
-    private TextField contrasenyaTxtF;
     @FXML
     private Label welcomeText;
     @FXML
@@ -44,9 +41,8 @@ public class HelloController {
 
         connection.statement.execute("use granja");
         String nombre = nombreTxtF.getText();
-        String contrasenya = contrasenyaTxtF.getText();
 
-        ResultSet resultSet = connection.statement.executeQuery("select Nombre, Contraseña from usuarios where Nombre = '" + nombre + "' AND Contraseña = '" + contrasenya + "'");
+        ResultSet resultSet = connection.statement.executeQuery("select Nombre from usuarios where Nombre = '" + nombre + "'");
         if (resultSet.next()) {
             String nombreEnBaseDeDatos = resultSet.getString("Nombre");
             if (nombreEnBaseDeDatos.equals(nombre)) {
@@ -59,6 +55,7 @@ public class HelloController {
         }
         return false;
     }
+
     @FXML
     protected void loginButton(ActionEvent event) throws SQLException {
         if (ComprobarUsuario())
@@ -72,8 +69,8 @@ public class HelloController {
         }
     }
     public static void cerrarVentana(ActionEvent e) {
-        Node source = (Node) e.getSource();     //Me devuelve el elemento al que hice click
-        Stage stage = (Stage) source.getScene().getWindow();    //Me devuelve la ventana donde se encuentra el elemento
+        Node source = (Node) e.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
 }
