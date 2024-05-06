@@ -47,7 +47,13 @@ INSERT INTO Alimentos (Nombre, Stock, Precio) VALUES
 
 select * from Alimentos;
 
-
+CREATE TABLE StockAnimales (
+                               IdAnimal INT AUTO_INCREMENT PRIMARY KEY,
+                               Nombre VARCHAR(100) NOT NULL,
+                               Descripcion VARCHAR(255),
+                               Stock INT NOT NULL,
+                               Precio DECIMAL(10, 2) NOT NULL
+);
 
 
 
