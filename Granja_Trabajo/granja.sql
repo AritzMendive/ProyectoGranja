@@ -55,6 +55,17 @@ CREATE TABLE StockAnimales (
                                Precio DECIMAL(10, 2) NOT NULL
 );
 
+INSERT INTO StockAnimales (Nombre, Descripcion, Stock, Precio) VALUES
+                                                                   ('Vaca', 'Vaca lechera Holstein', 50, 5000.00),
+                                                                   ('Cerdo', 'Cerdo de engorde', 100, 2500.00),
+                                                                   ('Gallina', 'Gallina ponedora', 200, 1500.00),
+                                                                   ('Cabra', 'Cabra lechera', 30, 3000.00),
+                                                                   ('Oveja', 'Oveja de lana', 80, 2000.00),
+                                                                   ('Pato', 'Pato de carne', 50, 1800.00),
+                                                                   ('Conejo', 'Conejo de carne', 70, 1200.00),
+                                                                   ('Caballo', 'Caballo de trabajo', 20, 7000.00),
+                                                                   ('Perro', 'Perro guardián', 10, 500.00),
+                                                                   ('Gato', 'Gato cazador de ratones', 15, 400.00);
 
 
 
