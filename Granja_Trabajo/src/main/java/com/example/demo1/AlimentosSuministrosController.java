@@ -52,7 +52,7 @@ public class AlimentosSuministrosController {
         }
     }
 
-    private void mostrarMensaje(String mensaje) {
+    public void mostrarMensaje(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Información");
         alert.setHeaderText(null);
@@ -60,7 +60,7 @@ public class AlimentosSuministrosController {
         alert.showAndWait();
     }
 
-    private void mostrarError(String mensaje) {
+    public void mostrarError(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText(null);
