@@ -3,10 +3,7 @@ package com.example.demo1;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -20,7 +17,7 @@ public class HelloController {
     private TextField nombreTxtF;
 
     @FXML
-    private TextField contrasenyaTxtF;
+    private PasswordField contrasenyaTxtF;
     @FXML
     private Label welcomeText;
     @FXML
@@ -46,11 +43,12 @@ public class HelloController {
         String nombre = nombreTxtF.getText();
         String contrasenya = contrasenyaTxtF.getText();
 
-        ResultSet resultSet = connection.statement.executeQuery("select Nombre, Contraseña from usuarios where Nombre = '" + nombre + "' AND Contraseña = '" + contrasenya + "'");
+        ResultSet resultSet = connection.statement.executeQuery("select Nombre, Contraseña, Rol from usuarios where Nombre = '" + nombre + "' AND Contraseña = '" + contrasenya + "'");
         if (resultSet.next()) {
             String nombreEnBaseDeDatos = resultSet.getString("Nombre");
+            String rol = resultSet.getString("Rol");
             if (nombreEnBaseDeDatos.equals(nombre)) {
-                System.out.println("Usuario correcto");
+                System.out.println(rol);
                 return true;
             }
         } else {

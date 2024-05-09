@@ -17,7 +17,7 @@
          </image>
       </ImageView>
       <Button fx:id="botonLogIn" layoutX="424.0" layoutY="312.0" mnemonicParsing="false" onAction="#loginButton" text="Iniciar Sesion" />
-      <PasswordField layoutX="392.0" layoutY="235.0" />
+      <PasswordField layoutX="392.0" layoutY="235.0" fx:id="contrasenyaTxtF"/>
       <Label layoutX="392.0" layoutY="209.0" text="Contraseña" />
       <Label layoutX="392.0" layoutY="150.0" text="Nombre" />
       <TextField fx:id="nombreTxtF" layoutX="392.0" layoutY="175.0" />

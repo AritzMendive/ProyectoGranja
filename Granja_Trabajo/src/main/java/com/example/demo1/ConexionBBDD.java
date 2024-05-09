@@ -40,7 +40,7 @@ public class ConexionBBDD {
 
 
     public void migracionClienteProveedor() throws SQLException {
-        statement.execute("CREATE PROCEDURE ActualizarRoles()\n" +
+        statement.execute("CREATE PROCEDURE if not exists ActualizarRoles()\n" +
                 "BEGIN\n" +
                 "    UPDATE Usuarios\n" +
                 "    SET Rol = 'Proveedor'\n" +
