@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
@@ -34,7 +35,33 @@ public class AlimentosTablas implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         controllerError = new AlimentosSuministrosController();
         alimentosView.setItems(listaAlimentos);
+
+        alimentosView.setCellFactory(lv -> new ListCell<Alimento>() {
+            @Override
+            protected void updateItem(Alimento item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(item.toString());
+                    setStyle(getRowStyle(item.getStock()));
+                }
+            }
+        });
     }
+
+    private String getRowStyle(int stock) {
+        if (stock == 0) {
+            return "-fx-control-inner-background: red;";
+        } else if (stock <= 5) {
+            return "-fx-control-inner-background: yellow;";
+        } else {
+            return ""; // Sin estilo para stocks normales
+        }
+    }
+
+
 
     public void refrescarDatos() {
         listaAlimentos.clear();
@@ -48,7 +75,9 @@ public class AlimentosTablas implements Initializable {
                     int stock = resultSet.getInt("stock");
                     int precio = resultSet.getInt("precio");
                     int id = resultSet.getInt("IdAlimento");
-                    listaAlimentos.add(new Alimento(nombre, stock, precio, id));
+
+                    Alimento nuevoAlimento = new Alimento(nombre, stock, precio, id);
+                    listaAlimentos.add(nuevoAlimento);
                 }
             }
         } catch (SQLException e) {

@@ -17,7 +17,7 @@ public class ConexionBBDD {
     }
 
 
-    public void creacionBBDD() throws FileNotFoundException {
+/*    public void creacionBBDD() throws FileNotFoundException {
         BufferedReader br = new BufferedReader(new FileReader("src/main/BBDD/granja.sql"));
 
         try {
@@ -36,7 +36,7 @@ public class ConexionBBDD {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
 
     public void migracionClienteProveedor() throws SQLException {

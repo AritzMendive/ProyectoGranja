@@ -47,12 +47,12 @@ public class HelloApplication extends Application {
         }
     }
 
-    public static void main(String[] args) throws FileNotFoundException, SQLException {
+/*    public static void main(String[] args) throws FileNotFoundException, SQLException {
         ConexionBBDD conexion = new ConexionBBDD();
         conexion.creacionBBDD();
         conexion.migracionClienteProveedor();
 
         launch();
 
-    }
+    }*/
 }
