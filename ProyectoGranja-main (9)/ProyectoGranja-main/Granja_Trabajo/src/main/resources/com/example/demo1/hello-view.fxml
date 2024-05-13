@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.HelloController">
+   <children>
+      <ImageView fitHeight="230.0" fitWidth="339.0" layoutX="14.0" layoutY="94.0">
+         <image>
+            <Image url="@../../../Imagenes/2024-04-26 16_10_58-alimentos y suministros de granja - Buscar con Google.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="131.0" fitWidth="139.0" layoutX="397.0">
+         <image>
+            <Image url="@../../../Imagenes/6662120.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="botonLogIn" layoutX="424.0" layoutY="312.0" mnemonicParsing="false" onAction="#loginButton" text="Iniciar Sesion" />
+      <PasswordField layoutX="392.0" layoutY="235.0" fx:id="contrasenyaTxtF"/>
+      <Label layoutX="392.0" layoutY="209.0" text="Contraseña" />
+      <Label layoutX="392.0" layoutY="150.0" text="Nombre" />
+      <TextField fx:id="nombreTxtF" layoutX="392.0" layoutY="175.0" />
+   </children>
+</AnchorPane>
