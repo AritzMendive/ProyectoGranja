@@ -39,6 +39,6 @@
                 <Insets />
             </opaqueInsets>
         </VBox>
-      <ListView fx:id="alimentosView" layoutX="20.0" layoutY="18.0" onMouseClicked="#mostrarInfoAlimento" prefHeight="255.0" prefWidth="240.0" />
+        <ListView fx:id="alimentosView" layoutX="20.0" layoutY="18.0" onMouseClicked="#mostrarInfoAlimento" prefHeight="255.0" prefWidth="240.0" />
     </children>
 </AnchorPane>
