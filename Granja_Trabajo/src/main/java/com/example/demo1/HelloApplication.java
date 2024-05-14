@@ -22,7 +22,6 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stagePrincipal) {
         this.stagePrincipal = stagePrincipal;
-        mostrarVentanaSecundaria();
         mostrarVentanaPrincipal();
     }
     public void mostrarVentanaPrincipal() {
@@ -37,7 +36,7 @@ public class HelloApplication extends Application {
     }
     public void mostrarVentanaSecundaria() {
         try {
-            FXMLLoader loader = new FXMLLoader(Alimentacion.class.getResource("alimentacion.fxml"));
+            FXMLLoader loader = new FXMLLoader(AlimentosTablas.class.getResource("alimentacionTablas.fxml"));
             Scene scene = new Scene(loader.load(), 800, 600);
             stagePrincipal.setTitle("Granja");
             stagePrincipal.setScene(scene);
@@ -46,13 +45,15 @@ public class HelloApplication extends Application {
         } catch (Exception ignored) {
         }
     }
+    public void mostrarVentanaTres() {
+        try {
+            FXMLLoader loader = new FXMLLoader(AlimentosSuministrosController.class.getResource("alimentacion.fxml"));
+            Scene scene = new Scene(loader.load(), 800, 600);
+            stagePrincipal.setTitle("Granja");
+            stagePrincipal.setScene(scene);
+            stagePrincipal.show();
 
-    public static void main(String[] args) throws FileNotFoundException, SQLException {
-        ConexionBBDD conexion = new ConexionBBDD();
-        conexion.creacionBBDD();
-        conexion.migracionClienteProveedor();
-
-        launch();
-
+        } catch (Exception ignored) {
+        }
     }
 }

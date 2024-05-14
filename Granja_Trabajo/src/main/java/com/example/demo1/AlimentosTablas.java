@@ -5,19 +5,27 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class AlimentosTablas implements Initializable {
 
+    public Button ListaBtn;
+    public TableColumn<Alimento,String> TablaNombre;
+    public TableColumn<Alimento,Integer> TablaStock;
+    public TableColumn<Alimento,Integer> TablaPrecio;
+    public TableView<Alimento> TablaPorColumna;
     @FXML
     ListView<Alimento> alimentosView;
     ObservableList<Alimento> listaAlimentos = FXCollections.observableArrayList();
+    ArrayList<Alimento> listaA = new ArrayList<>();
 
     @FXML
     private TextField fieldNombre;
@@ -27,16 +35,23 @@ public class AlimentosTablas implements Initializable {
 
     @FXML
     private TextField fieldPrecio;
-
+    private HelloApplication a;
     AlimentosSuministrosController controllerError;
-
-
+    public AlimentosTablas()
+    {
+        a = new HelloApplication();
+    }
+    ObservableList<Alimento> list = FXCollections.observableArrayList(
+            refrescarDatos()
+    );
     @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {
         controllerError = new AlimentosSuministrosController();
-        alimentosView.setItems(listaAlimentos);
-
-        alimentosView.setCellFactory(lv -> new ListCell<Alimento>() {
+        TablaPorColumna.setItems(listaAlimentos);
+        TablaNombre.setCellValueFactory(new PropertyValueFactory<Alimento,String>("nombre"));
+        TablaStock.setCellValueFactory(new PropertyValueFactory<Alimento,Integer>("stock"));
+        TablaPrecio.setCellValueFactory(new PropertyValueFactory<Alimento,Integer>("precio"));
+        TablaPorColumna.setCellFactory(lv -> new ListCell<Alimento>() {
             @Override
             protected void updateItem(Alimento item, boolean empty) {
                 super.updateItem(item, empty);
@@ -49,6 +64,7 @@ public class AlimentosTablas implements Initializable {
                 }
             }
         });
+        TablaPorColumna.setItems(list);
     }
 
     private String getRowStyle(int stock) {
@@ -63,7 +79,7 @@ public class AlimentosTablas implements Initializable {
 
 
 
-    public void refrescarDatos() {
+    public ArrayList<Alimento> refrescarDatos() {
         listaAlimentos.clear();
 
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/granja", "root", "root")) {
@@ -77,25 +93,27 @@ public class AlimentosTablas implements Initializable {
                     int id = resultSet.getInt("IdAlimento");
 
                     Alimento nuevoAlimento = new Alimento(nombre, stock, precio, id);
-                    listaAlimentos.add(nuevoAlimento);
+                    listaA.add(nuevoAlimento);
                 }
+                return listaA;
             }
         } catch (SQLException e) {
             controllerError.mostrarError("Error al cargar los alimentos.");
             e.printStackTrace();
         }
+        return null;
     }
 
     public void mostrarInfoAlimento(javafx.scene.input.MouseEvent mouseEvent) {
-        Alimento alimentoSeleccionado = alimentosView.getSelectionModel().getSelectedItem();
-        fieldNombre.setText(alimentoSeleccionado.getNombre());
-        fieldStock.setText(String.valueOf(alimentoSeleccionado.getStock()));
-        fieldPrecio.setText(String.valueOf(alimentoSeleccionado.getPrecio()));
+        String nombre = TablaPorColumna.getSelectionModel().getSelectedItem().getNombre();
+        fieldNombre.setText(nombre);
+        fieldStock.setText(String.valueOf(TablaPorColumna.getSelectionModel().getSelectedItem().getStock()));
+        fieldPrecio.setText(String.valueOf(TablaPorColumna.getSelectionModel().getSelectedItem().getPrecio()));
 
     }
 
     public void eliminarEmpleado(ActionEvent actionEvent) {
-        Alimento empleadoSeleccionado = alimentosView.getSelectionModel().getSelectedItem();
+        Alimento empleadoSeleccionado = TablaPorColumna.getSelectionModel().getSelectedItem();
         if (empleadoSeleccionado != null) {
             try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/granja", "root", "root")) {
                 String deleteSQL = "DELETE FROM Alimentos WHERE IdAlimento = ?";
@@ -116,5 +134,15 @@ public class AlimentosTablas implements Initializable {
         } else {
             controllerError.mostrarError("Por favor, seleccione un alimento de la lista.");
         }
+    }
+    public void cambioVista(ActionEvent event)
+    {
+        cerrarVentana(event);
+        a.mostrarVentanaTres();
+    }
+    public static void cerrarVentana(ActionEvent e) {
+        Node source = (Node) e.getSource();     //Me devuelve el elemento al que hice click
+        Stage stage = (Stage) source.getScene().getWindow();    //Me devuelve la ventana donde se encuentra el elemento
+        stage.close();
     }
 }

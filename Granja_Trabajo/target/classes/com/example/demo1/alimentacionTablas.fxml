@@ -34,11 +34,19 @@
                         <Font size="15.0" />
                     </font>
                 </TextField>
+            <Button fx:id="ListaBtn" mnemonicParsing="false" onAction="#cambioVista" text="Ver Lista" />
             </children>
             <opaqueInsets>
                 <Insets />
             </opaqueInsets>
         </VBox>
-        <ListView fx:id="alimentosView" layoutX="20.0" layoutY="18.0" onMouseClicked="#mostrarInfoAlimento" prefHeight="255.0" prefWidth="240.0" />
+      <ListView fx:id="alimentosView" layoutX="20.0" layoutY="18.0" onMouseClicked="#mostrarInfoAlimento" prefHeight="255.0" prefWidth="240.0" />
+      <TableView fx:id="TablaPorColumna" layoutX="20.0" layoutY="73.0" onMouseClicked="#mostrarInfoAlimento" prefHeight="200.0" prefWidth="240.0">
+        <columns>
+          <TableColumn fx:id="TablaNombre" prefWidth="80.0" text="Nombre" />
+          <TableColumn fx:id="TablaStock" prefWidth="80.0" text="Stock" />
+          <TableColumn fx:id="TablaPrecio" prefWidth="80.0" text="Precio" />
+        </columns>
+      </TableView>
     </children>
 </AnchorPane>

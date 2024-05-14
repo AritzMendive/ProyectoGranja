@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class HelloController {
 
@@ -36,7 +37,7 @@ public class HelloController {
     }
 
     @FXML
-    protected boolean ComprobarUsuario() throws SQLException {
+    protected String ComprobarUsuario() throws SQLException {
         ConexionBBDD connection = new ConexionBBDD();
 
         connection.statement.execute("use granja");
@@ -49,24 +50,30 @@ public class HelloController {
             String rol = resultSet.getString("Rol");
             if (nombreEnBaseDeDatos.equals(nombre)) {
                 System.out.println(rol);
-                return true;
+                return rol;
             }
         } else {
             System.out.println("Usuario no encontrado");
-            return false;
+            return null;
         }
-        return false;
+        return null;
     }
     @FXML
     protected void loginButton(ActionEvent event) throws SQLException {
-        if (ComprobarUsuario())
+        if (Objects.equals(ComprobarUsuario(), "Proveedor"))
         {
             cerrarVentana(event);
             a.mostrarVentanaSecundaria();
         }
-        else
+        else if (Objects.equals(ComprobarUsuario(), "Admin"))
         {
-            onHelloButtonClick();
+            cerrarVentana(event);
+            a.mostrarVentanaPrincipal();
+        }
+        else if (Objects.equals(ComprobarUsuario(), "Granjero"))
+        {
+            cerrarVentana(event);
+            a.mostrarVentanaPrincipal();
         }
     }
     public static void cerrarVentana(ActionEvent e) {

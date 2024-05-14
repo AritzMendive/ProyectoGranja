@@ -1,10 +1,13 @@
 package com.example.demo1;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,8 +25,11 @@ public class AlimentosSuministrosController {
     private TextField fieldPrecio;
     @FXML
     private Button buttonInsertar;
-
-
+    private HelloApplication a;
+    public AlimentosSuministrosController()
+    {
+        a = new HelloApplication();
+    }
 
     @FXML
     private void inserTarDatos() throws SQLException{
@@ -89,6 +95,16 @@ public class AlimentosSuministrosController {
         } catch (SQLException e) {
             throw new RuntimeException("Hubo un error durante la inserción en la base de datos", e);
         }
+    }
+    public void cambioVentana(ActionEvent event)
+    {
+        cerrarVentana(event);
+        a.mostrarVentanaSecundaria();
+    }
+    public static void cerrarVentana(ActionEvent e) {
+        Node source = (Node) e.getSource();     //Me devuelve el elemento al que hice click
+        Stage stage = (Stage) source.getScene().getWindow();    //Me devuelve la ventana donde se encuentra el elemento
+        stage.close();
     }
 
 }
