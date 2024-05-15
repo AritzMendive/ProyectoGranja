@@ -32,24 +32,26 @@ public class AlimentosSuministrosController {
     }
 
     @FXML
-    private void inserTarDatos() throws SQLException{
+    private void inserTarDatos() throws SQLException {
         String nombre = fieldAlimentosSuministros.getText();
-        String puesto = fieldCantidad.getText();
-        String salarioStr = fieldPrecio.getText();
+        String cantidadStr = fieldCantidad.getText(); // Usar el valor correcto del campo de cantidad
+        String precioStr = fieldPrecio.getText(); // Usar el valor correcto del campo de precio
         int stock;
+        int precio;
 
         try {
-            stock = Integer.parseInt(salarioStr);
+            stock = Integer.parseInt(cantidadStr); // Convertir correctamente el valor de cantidad a stock
+            precio = Integer.parseInt(precioStr); // Convertir correctamente el valor de precio a entero
         } catch (NumberFormatException e) {
             mostrarError("Inserte un numero entero por favor.");
             return;
         }
-        if (nombre.isEmpty() || puesto == null || salarioStr.isEmpty()) {
+        if (nombre.isEmpty() || cantidadStr.isEmpty() || precioStr.isEmpty()) {
             mostrarError("Rellene todo por favor.");
         } else {
             // Insertar datos en la base de datos
-            if (insertarAlimentoEnBD(nombre, stock, stock)) {
-                mostrarMensaje("Alimento " + nombre + " introducido en nuestra base de dats, gracias.");
+            if (insertarAlimentoEnBD(nombre, stock, precio)) {
+                mostrarMensaje("Alimento " + nombre + " introducido en nuestra base de datos, gracias.");
                 limpiarCampos();
             } else {
                 // Mostrar mensaje de error

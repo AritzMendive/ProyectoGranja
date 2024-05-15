@@ -23,10 +23,11 @@ public class HelloController {
     private Label welcomeText;
     @FXML
     private HelloApplication a;
-    public HelloController()
-    {
+
+    public HelloController() {
         a = new HelloApplication();
     }
+
     @FXML
     protected void onHelloButtonClick() {
         Alert error = new Alert(Alert.AlertType.ERROR);
@@ -58,24 +59,21 @@ public class HelloController {
         }
         return null;
     }
+
     @FXML
     protected void loginButton(ActionEvent event) throws SQLException {
-        if (Objects.equals(ComprobarUsuario(), "Proveedor"))
-        {
+        if (Objects.equals(ComprobarUsuario(), "Proveedor")) {
             cerrarVentana(event);
             a.mostrarVentanaSecundaria();
-        }
-        else if (Objects.equals(ComprobarUsuario(), "Admin"))
-        {
+        } else if (Objects.equals(ComprobarUsuario(), "Admin")) {
             cerrarVentana(event);
             a.mostrarVentanaPrincipal();
-        }
-        else if (Objects.equals(ComprobarUsuario(), "Granjero"))
-        {
+        } else if (Objects.equals(ComprobarUsuario(), "Granjero")) {
             cerrarVentana(event);
             a.mostrarVentanaPrincipal();
         }
     }
+
     public static void cerrarVentana(ActionEvent e) {
         Node source = (Node) e.getSource();     //Me devuelve el elemento al que hice click
         Stage stage = (Stage) source.getScene().getWindow();    //Me devuelve la ventana donde se encuentra el elemento
