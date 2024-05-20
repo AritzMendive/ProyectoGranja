@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
-public class HelloController {
+public class HelloController implements CerrarVentana{
 
     public Button botonLogIn;
     @FXML
@@ -23,11 +23,10 @@ public class HelloController {
     private Label welcomeText;
     @FXML
     private HelloApplication a;
-
-    public HelloController() {
+    public HelloController()
+    {
         a = new HelloApplication();
     }
-
     @FXML
     protected void onHelloButtonClick() {
         Alert error = new Alert(Alert.AlertType.ERROR);
@@ -59,24 +58,26 @@ public class HelloController {
         }
         return null;
     }
-
     @FXML
     protected void loginButton(ActionEvent event) throws SQLException {
-        if (Objects.equals(ComprobarUsuario(), "Proveedor")) {
-            cerrarVentana(event);
+        if (Objects.equals(ComprobarUsuario(), "Proveedor"))
+        {
+            CerrarVentana.cerrarVentana(event);
             a.mostrarVentanaSecundaria();
-        } else if (Objects.equals(ComprobarUsuario(), "Admin")) {
-            cerrarVentana(event);
-            a.mostrarVentanaPrincipal();
-        } else if (Objects.equals(ComprobarUsuario(), "Granjero")) {
-            cerrarVentana(event);
+        }
+        else if (Objects.equals(ComprobarUsuario(), "Admin"))
+        {
+            CerrarVentana.cerrarVentana(event);
             a.mostrarVentanaPrincipal();
         }
-    }
-
-    public static void cerrarVentana(ActionEvent e) {
-        Node source = (Node) e.getSource();     //Me devuelve el elemento al que hice click
-        Stage stage = (Stage) source.getScene().getWindow();    //Me devuelve la ventana donde se encuentra el elemento
-        stage.close();
+        else if (Objects.equals(ComprobarUsuario(), "Granjero"))
+        {
+            CerrarVentana.cerrarVentana(event);
+            a.mostrarVentanaPrincipal();
+        }
+        else
+        {
+            onHelloButtonClick();
+        }
     }
 }

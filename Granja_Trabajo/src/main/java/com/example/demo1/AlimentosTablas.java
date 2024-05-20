@@ -15,20 +15,17 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class AlimentosTablas implements Initializable {
+public class AlimentosTablas implements Initializable, CerrarVentana {
 
     public Button ListaBtn;
-    public TableColumn<Alimento, String> TablaNombre;
-    public TableColumn<Alimento, Integer> TablaStock;
-    public TableColumn<Alimento, Integer> TablaPrecio;
+    public TableColumn<Alimento,String> TablaNombre;
+    public TableColumn<Alimento,Integer> TablaStock;
+    public TableColumn<Alimento,Integer> TablaPrecio;
     public TableView<Alimento> TablaPorColumna;
-    private ObservableList<Alimento> listaAlimentos = FXCollections.observableArrayList();
-    private HelloApplication a;
-    private AlimentosSuministrosController controllerError;
-
-    public AlimentosTablas() {
-        a = new HelloApplication();
-    }
+    @FXML
+    ListView<Alimento> alimentosView;
+    ObservableList<Alimento> listaAlimentos = FXCollections.observableArrayList();
+    ArrayList<Alimento> listaA = new ArrayList<>();
 
     @FXML
     private TextField fieldNombre;
@@ -38,28 +35,36 @@ public class AlimentosTablas implements Initializable {
 
     @FXML
     private TextField fieldPrecio;
-
+    private HelloApplication a;
+    AlimentosSuministrosController controllerError;
+    public AlimentosTablas()
+    {
+        a = new HelloApplication();
+    }
+    ObservableList<Alimento> list = FXCollections.observableArrayList(
+            refrescarDatos()
+    );
     @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {
         controllerError = new AlimentosSuministrosController();
         TablaPorColumna.setItems(listaAlimentos);
-        TablaNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        TablaStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
-        TablaPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
-
-        TablaPorColumna.setRowFactory(tv -> new TableRow<Alimento>() {
+        TablaNombre.setCellValueFactory(new PropertyValueFactory<Alimento,String>("nombre"));
+        TablaStock.setCellValueFactory(new PropertyValueFactory<Alimento,Integer>("stock"));
+        TablaPrecio.setCellValueFactory(new PropertyValueFactory<Alimento,Integer>("precio"));
+        alimentosView.setCellFactory(lv -> new ListCell<Alimento>() {
             @Override
             protected void updateItem(Alimento item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null) {
+                    setText(null);
                     setStyle("");
                 } else {
+                    setText(item.toString());
                     setStyle(getRowStyle(item.getStock()));
                 }
             }
         });
-
-        refrescarDatos(); // Para cargar los datos inicialmente
+        TablaPorColumna.setItems(list);
     }
 
     private String getRowStyle(int stock) {
@@ -72,12 +77,13 @@ public class AlimentosTablas implements Initializable {
         }
     }
 
-    @FXML
-    public void refrescarDatos() {
-        listaAlimentos.clear(); // Limpiar la lista antes de actualizar
+
+
+    public ObservableList<Alimento> refrescarDatos() {
+        listaAlimentos.clear();
 
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/granja", "root", "root")) {
-            String selectSQL = "SELECT * FROM alimentos";
+            String selectSQL = "SELECT * FROM Alimentos";
             try (PreparedStatement statement = connection.prepareStatement(selectSQL)) {
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next()) {
@@ -87,26 +93,25 @@ public class AlimentosTablas implements Initializable {
                     int id = resultSet.getInt("IdAlimento");
 
                     Alimento nuevoAlimento = new Alimento(nombre, stock, precio, id);
-                    listaAlimentos.add(nuevoAlimento); // Añadir cada alimento a la lista observable
+                    listaAlimentos.add(nuevoAlimento);
                 }
+                return listaAlimentos;
             }
         } catch (SQLException e) {
             controllerError.mostrarError("Error al cargar los alimentos.");
             e.printStackTrace();
         }
+        return null;
     }
 
-    @FXML
     public void mostrarInfoAlimento(javafx.scene.input.MouseEvent mouseEvent) {
-        Alimento alimentoSeleccionado = TablaPorColumna.getSelectionModel().getSelectedItem();
-        if (alimentoSeleccionado != null) {
-            fieldNombre.setText(alimentoSeleccionado.getNombre());
-            fieldStock.setText(String.valueOf(alimentoSeleccionado.getStock()));
-            fieldPrecio.setText(String.valueOf(alimentoSeleccionado.getPrecio()));
-        }
+        String nombre = TablaPorColumna.getSelectionModel().getSelectedItem().getNombre();
+        fieldNombre.setText(nombre);
+        fieldStock.setText(String.valueOf(TablaPorColumna.getSelectionModel().getSelectedItem().getStock()));
+        fieldPrecio.setText(String.valueOf(TablaPorColumna.getSelectionModel().getSelectedItem().getPrecio()));
+
     }
 
-    @FXML
     public void eliminarEmpleado(ActionEvent actionEvent) {
         Alimento empleadoSeleccionado = TablaPorColumna.getSelectionModel().getSelectedItem();
         if (empleadoSeleccionado != null) {
@@ -119,7 +124,7 @@ public class AlimentosTablas implements Initializable {
                         controllerError.mostrarMensaje("Alimento eliminado correctamente.");
                         listaAlimentos.remove(empleadoSeleccionado);
                     } else {
-                        controllerError.mostrarError("No se pudo eliminar el alimento.");
+                       controllerError.mostrarError("No se pudo eliminar el alimento.");
                     }
                 }
             } catch (SQLException e) {
@@ -130,16 +135,9 @@ public class AlimentosTablas implements Initializable {
             controllerError.mostrarError("Por favor, seleccione un alimento de la lista.");
         }
     }
-
-    @FXML
-    public void cambioVista(ActionEvent event) {
-        cerrarVentana(event);
+    public void cambioVista(ActionEvent event)
+    {
+        CerrarVentana.cerrarVentana(event);
         a.mostrarVentanaTres();
-    }
-
-    public static void cerrarVentana(ActionEvent e) {
-        Node source = (Node) e.getSource(); // Me devuelve el elemento al que hice click
-        Stage stage = (Stage) source.getScene().getWindow(); // Me devuelve la ventana donde se encuentra el elemento
-        stage.close();
     }
 }

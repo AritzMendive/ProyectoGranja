@@ -14,7 +14,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class AlimentosSuministrosController {
+public class AlimentosSuministrosController implements CerrarVentana{
     Connection connection;
 
     @FXML
@@ -32,26 +32,24 @@ public class AlimentosSuministrosController {
     }
 
     @FXML
-    private void inserTarDatos() throws SQLException {
+    private void inserTarDatos() throws SQLException{
         String nombre = fieldAlimentosSuministros.getText();
-        String cantidadStr = fieldCantidad.getText(); // Usar el valor correcto del campo de cantidad
-        String precioStr = fieldPrecio.getText(); // Usar el valor correcto del campo de precio
+        String puesto = fieldCantidad.getText();
+        String salarioStr = fieldPrecio.getText();
         int stock;
-        int precio;
 
         try {
-            stock = Integer.parseInt(cantidadStr); // Convertir correctamente el valor de cantidad a stock
-            precio = Integer.parseInt(precioStr); // Convertir correctamente el valor de precio a entero
+            stock = Integer.parseInt(salarioStr);
         } catch (NumberFormatException e) {
             mostrarError("Inserte un numero entero por favor.");
             return;
         }
-        if (nombre.isEmpty() || cantidadStr.isEmpty() || precioStr.isEmpty()) {
+        if (nombre.isEmpty() || puesto == null || salarioStr.isEmpty()) {
             mostrarError("Rellene todo por favor.");
         } else {
             // Insertar datos en la base de datos
-            if (insertarAlimentoEnBD(nombre, stock, precio)) {
-                mostrarMensaje("Alimento " + nombre + " introducido en nuestra base de datos, gracias.");
+            if (insertarAlimentoEnBD(nombre, stock, stock)) {
+                mostrarMensaje("Alimento " + nombre + " introducido en nuestra base de dats, gracias.");
                 limpiarCampos();
             } else {
                 // Mostrar mensaje de error
@@ -100,13 +98,8 @@ public class AlimentosSuministrosController {
     }
     public void cambioVentana(ActionEvent event)
     {
-        cerrarVentana(event);
+        CerrarVentana.cerrarVentana(event);
         a.mostrarVentanaSecundaria();
-    }
-    public static void cerrarVentana(ActionEvent e) {
-        Node source = (Node) e.getSource();     //Me devuelve el elemento al que hice click
-        Stage stage = (Stage) source.getScene().getWindow();    //Me devuelve la ventana donde se encuentra el elemento
-        stage.close();
     }
 
 }

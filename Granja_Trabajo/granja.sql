@@ -7,7 +7,7 @@ CREATE TABLE Usuarios (
     IdRol INT AUTO_INCREMENT PRIMARY KEY,
     Nombre VARCHAR(50) NOT NULL,
     Contraseña VARCHAR(50) NOT NULL,
-    Rol ENUM('Granjero', 'Cliente', 'Azdmin', 'Proveedor') NOT NULL
+    Rol ENUM('Granjero', 'Cliente', 'Admin', 'Proveedor') NOT NULL
 );
 
 INSERT INTO Usuarios (Nombre, Contraseña, Rol) VALUES
