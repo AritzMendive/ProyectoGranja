@@ -54,9 +54,9 @@ public class AlimentosTablas implements Initializable, CerrarVentana {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         controllerError = new AlimentosSuministrosController();
         TablaPorColumna.setItems(listaAlimentos);
-        TablaNombre.setCellValueFactory(new PropertyValueFactory<Alimento,String>("nombre"));
-        TablaStock.setCellValueFactory(new PropertyValueFactory<Alimento,Integer>("stock"));
-        TablaPrecio.setCellValueFactory(new PropertyValueFactory<Alimento,Integer>("precio"));
+        TablaNombre.setCellValueFactory(new PropertyValueFactory<Alimento, String>("nombre"));
+        TablaStock.setCellValueFactory(new PropertyValueFactory<Alimento, Integer>("stock"));
+        TablaPrecio.setCellValueFactory(new PropertyValueFactory<Alimento, Integer>("precio"));
         alimentosView.setCellFactory(lv -> new ListCell<Alimento>() {
             @Override
             protected void updateItem(Alimento item, boolean empty) {
@@ -70,7 +70,7 @@ public class AlimentosTablas implements Initializable, CerrarVentana {
                 }
             }
         });
-        TablaPorColumna.setItems(list);
+        refrescarDatos();
     }
 
     private String getRowStyle(int stock) {
@@ -107,7 +107,9 @@ public class AlimentosTablas implements Initializable, CerrarVentana {
             controllerError.mostrarError("Error al cargar los alimentos.");
             e.printStackTrace();
         }
-        return null;
+        TablaPorColumna.setItems(listaAlimentos);
+
+        return listaAlimentos;
     }
 
     public void mostrarInfoAlimento(javafx.scene.input.MouseEvent mouseEvent) {
@@ -128,7 +130,7 @@ public class AlimentosTablas implements Initializable, CerrarVentana {
                     int filasEliminadas = statement.executeUpdate();
                     if (filasEliminadas > 0) {
                         controllerError.mostrarMensaje("Alimento eliminado correctamente.");
-                        listaAlimentos.remove(empleadoSeleccionado);
+                        refrescarDatos();
                     } else {
                        controllerError.mostrarError("No se pudo eliminar el alimento.");
                     }
