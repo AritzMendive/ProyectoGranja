@@ -126,17 +126,17 @@ public class HelloController implements CerrarVentana{
 
     private void redirigirALogin() {
         try {
-            // Obtener la ventana actual y cerrarla
-            Stage stageActual = (Stage) botonCerrarSesion.getScene().getWindow();
-            stageActual.close();
-
             // Cargar la nueva ventana de login
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("login.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setTitle("Login");
             stage.setScene(new Scene(root));
             stage.show();
+
+            // Cerrar la ventana actual
+            Stage stageActual = (Stage) botonCerrarSesion.getScene().getWindow();
+            stageActual.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
