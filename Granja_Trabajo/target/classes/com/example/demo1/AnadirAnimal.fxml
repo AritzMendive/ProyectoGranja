@@ -6,13 +6,7 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.AnadirAnimal">
    <children>
       <Label fx:id="NombreL" layoutX="35.0" layoutY="38.0" text="Nombre" />
-      <Label fx:id="CantidadL" layoutX="33.0" layoutY="119.0" text="Cantidad" />
-      <Label fx:id="ComidaL" layoutX="33.0" layoutY="200.0" text="Comida" />
-      <Label fx:id="CantidadAL" layoutX="34.0" layoutY="280.0" text="Cantidad" />
       <TextField fx:id="NombreTXT" layoutX="33.0" layoutY="55.0" prefHeight="25.0" prefWidth="193.0" />
-      <TextField fx:id="CantidadATXT" layoutX="33.0" layoutY="136.0" prefHeight="25.0" prefWidth="193.0" />
-      <TextField fx:id="ComidaTXT" layoutX="33.0" layoutY="217.0" prefHeight="25.0" prefWidth="193.0" />
-      <TextField fx:id="CantidadCTXT" layoutX="33.0" layoutY="297.0" prefHeight="25.0" prefWidth="193.0" />
       <Button fx:id="AnadirBTN" layoutX="35.0" layoutY="350.0" mnemonicParsing="false" text="Añadir" />
       <Button fx:id="GestionBTN" layoutX="108.0" layoutY="350.0" mnemonicParsing="false" text="Gestionar Animales" />
    </children>

@@ -16,10 +16,11 @@
             <Image url="@../../../Imagenes/6662120.png" />
          </image>
       </ImageView>
-      <Button fx:id="botonLogIn" layoutX="424.0" layoutY="312.0" mnemonicParsing="false" onAction="#loginButton" text="Iniciar Sesion" />
-      <PasswordField layoutX="392.0" layoutY="235.0" fx:id="contrasenyaTxtF"/>
+      <Button fx:id="botonLogIn" layoutX="409.0" layoutY="277.0" mnemonicParsing="false" onAction="#loginButton" prefHeight="64.0" prefWidth="116.0" text="Iniciar Sesion" />
+      <PasswordField fx:id="contrasenyaTxtF" layoutX="392.0" layoutY="235.0" />
       <Label layoutX="392.0" layoutY="209.0" text="Contraseña" />
       <Label layoutX="392.0" layoutY="150.0" text="Nombre" />
       <TextField fx:id="nombreTxtF" layoutX="392.0" layoutY="175.0" />
+      <Button fx:id="botonCerrarSesion" layoutX="419.0" layoutY="355.0" mnemonicParsing="false" onAction="#handleCerrarSesion" prefHeight="25.0" prefWidth="95.0" text="Cerrar Sesión" />
    </children>
 </AnchorPane>
