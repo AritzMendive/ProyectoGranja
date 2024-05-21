@@ -1,13 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
+<?import javafx.scene.text.*?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.AnadirAnimal">
    <children>
       <Label fx:id="NombreL" layoutX="35.0" layoutY="38.0" text="Nombre" />
-      <TextField fx:id="NombreTXT" layoutX="33.0" layoutY="55.0" prefHeight="25.0" prefWidth="193.0" />
-      <Button fx:id="AnadirBTN" layoutX="35.0" layoutY="350.0" mnemonicParsing="false" text="Añadir" />
+      <TextField fx:id="NombreTXT" layoutX="33.0" layoutY="55.0" prefHeight="25.0" prefWidth="240.0" />
+      <Button fx:id="mostrarAlimentos" layoutX="35.0" layoutY="320.0" mnemonicParsing="false" onMouseClicked="#mostrarAlimentos" text="Mostrar Alimentos" />
+      <Button fx:id="AnadirBTN" layoutX="35.0" layoutY="350.0" mnemonicParsing="false" onMouseClicked="#anadirAnimal" text="Añadir" />
       <Button fx:id="GestionBTN" layoutX="108.0" layoutY="350.0" mnemonicParsing="false" text="Gestionar Animales" />
+      <ListView fx:id="AlimentacionListView" layoutX="35.0" layoutY="100.0" prefHeight="200.0" prefWidth="240.0" />
+      <VBox alignment="TOP_CENTER" layoutX="291.0" layoutY="30.0" prefHeight="255.0" prefWidth="270.0" spacing="20.0">
+         <children>
+            <TextField fx:id="fieldNombre" alignment="CENTER" editable="false" style="-fx-background-color: transparent;" text="Nombre del alimento">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="fieldStock" alignment="CENTER" editable="false" style="-fx-background-color: transparent;" text="Cantidad">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </TextField>
+            <Button fx:id="sumarBTN" mnemonicParsing="false" text="+" />
+            <Button fx:id="restarBTN" mnemonicParsing="false" text="-" />
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

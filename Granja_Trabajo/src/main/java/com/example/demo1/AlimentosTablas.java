@@ -4,16 +4,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
@@ -24,8 +20,6 @@ public class AlimentosTablas implements Initializable, CerrarVentana {
     public Button ListaBtn;
     public TableColumn<Alimento,String> TablaNombre;
     public TableColumn<Alimento,Integer> TablaStock;
-    @FXML
-    private Button botonCerrarSesion;
     public TableColumn<Alimento,Integer> TablaPrecio;
     public TableView<Alimento> TablaPorColumna;
     @FXML
@@ -54,9 +48,9 @@ public class AlimentosTablas implements Initializable, CerrarVentana {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         controllerError = new AlimentosSuministrosController();
         TablaPorColumna.setItems(listaAlimentos);
-        TablaNombre.setCellValueFactory(new PropertyValueFactory<Alimento, String>("nombre"));
-        TablaStock.setCellValueFactory(new PropertyValueFactory<Alimento, Integer>("stock"));
-        TablaPrecio.setCellValueFactory(new PropertyValueFactory<Alimento, Integer>("precio"));
+        TablaNombre.setCellValueFactory(new PropertyValueFactory<Alimento,String>("nombre"));
+        TablaStock.setCellValueFactory(new PropertyValueFactory<Alimento,Integer>("stock"));
+        TablaPrecio.setCellValueFactory(new PropertyValueFactory<Alimento,Integer>("precio"));
         alimentosView.setCellFactory(lv -> new ListCell<Alimento>() {
             @Override
             protected void updateItem(Alimento item, boolean empty) {
@@ -70,7 +64,7 @@ public class AlimentosTablas implements Initializable, CerrarVentana {
                 }
             }
         });
-        refrescarDatos();
+        TablaPorColumna.setItems(list);
     }
 
     private String getRowStyle(int stock) {
@@ -96,9 +90,8 @@ public class AlimentosTablas implements Initializable, CerrarVentana {
                     String nombre = resultSet.getString("nombre");
                     int stock = resultSet.getInt("stock");
                     int precio = resultSet.getInt("precio");
-                    int id = resultSet.getInt("IdAlimento");
 
-                    Alimento nuevoAlimento = new Alimento(nombre, stock, precio, id);
+                    Alimento nuevoAlimento = new Alimento(nombre, stock, precio);
                     listaAlimentos.add(nuevoAlimento);
                 }
                 return listaAlimentos;
@@ -107,9 +100,7 @@ public class AlimentosTablas implements Initializable, CerrarVentana {
             controllerError.mostrarError("Error al cargar los alimentos.");
             e.printStackTrace();
         }
-        TablaPorColumna.setItems(listaAlimentos);
-
-        return listaAlimentos;
+        return null;
     }
 
     public void mostrarInfoAlimento(javafx.scene.input.MouseEvent mouseEvent) {
@@ -120,19 +111,20 @@ public class AlimentosTablas implements Initializable, CerrarVentana {
 
     }
 
-    public void eliminarEmpleado(ActionEvent actionEvent) {
-        Alimento empleadoSeleccionado = TablaPorColumna.getSelectionModel().getSelectedItem();
-        if (empleadoSeleccionado != null) {
+    @FXML
+    public void eliminarAlimento(ActionEvent actionEvent) {
+        Alimento alimentoSeleccionado = TablaPorColumna.getSelectionModel().getSelectedItem();
+        if (alimentoSeleccionado != null) {
             try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/granja", "root", "root")) {
-                String deleteSQL = "DELETE FROM Alimentos WHERE IdAlimento = ?";
+                String deleteSQL = "DELETE FROM Alimentos WHERE Nombre = ?";
                 try (PreparedStatement statement = connection.prepareStatement(deleteSQL)) {
-                    statement.setInt(1, empleadoSeleccionado.getId());
+                    statement.setString(1, alimentoSeleccionado.getNombre());
                     int filasEliminadas = statement.executeUpdate();
                     if (filasEliminadas > 0) {
                         controllerError.mostrarMensaje("Alimento eliminado correctamente.");
-                        refrescarDatos();
+                        listaAlimentos.remove(alimentoSeleccionado);
                     } else {
-                       controllerError.mostrarError("No se pudo eliminar el alimento.");
+                        controllerError.mostrarError("No se pudo eliminar el alimento.");
                     }
                 }
             } catch (SQLException e) {
@@ -143,55 +135,4 @@ public class AlimentosTablas implements Initializable, CerrarVentana {
             controllerError.mostrarError("Por favor, seleccione un alimento de la lista.");
         }
     }
-    public void cambioVista(ActionEvent event)
-    {
-        CerrarVentana.cerrarVentana(event);
-        a.mostrarVentanaTres();
-    }
-    @FXML
-    private void handleCerrarSesion(ActionEvent event) {
-        mostrarConfirmacionCerrarSesion();
-    }
-
-    private void mostrarConfirmacionCerrarSesion() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmación de cierre de sesión");
-        alert.setHeaderText(null);
-        alert.setContentText("¿Está seguro de que desea cerrar sesión?");
-
-        ButtonType buttonTypeSi = new ButtonType("Sí");
-        ButtonType buttonTypeNo = new ButtonType("No");
-
-        alert.getButtonTypes().setAll(buttonTypeSi, buttonTypeNo);
-
-        alert.showAndWait().ifPresent(response -> {
-            if (response == buttonTypeSi) {
-                cerrarSesion();
-            }
-        });
-    }
-
-    private void cerrarSesion() {
-        System.out.println("Sesión cerrada");
-        redirigirALogin();
-    }
-
-    private void redirigirALogin() {
-        try {
-            // Cargar la nueva ventana de login
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Login");
-            stage.setScene(new Scene(root));
-            stage.show();
-
-            // Cerrar la ventana actual
-            Stage stageActual = (Stage) botonCerrarSesion.getScene().getWindow();
-            stageActual.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 }

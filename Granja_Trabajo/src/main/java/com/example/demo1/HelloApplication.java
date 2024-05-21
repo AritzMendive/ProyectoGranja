@@ -26,7 +26,7 @@ public class HelloApplication extends Application {
     }
     public void mostrarVentanaPrincipal() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("AnadirAnimal.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 800, 600);
             stagePrincipal.setTitle("Granja");
             stagePrincipal.setScene(scene);
