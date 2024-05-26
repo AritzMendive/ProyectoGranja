@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.DashboardController">
+    <ImageView fx:id="fotoPerfilView" fitHeight="100.0" fitWidth="100.0" />
+    <Button onAction="#handleHelloView" text="Hello View" />
+    <Button onAction="#handleAlimentacionTablas" text="Alimentación Tablas" />
+    <Button onAction="#handleDarDeComer" text="Dar de Comer" />
+    <Button onAction="#handleGestionDietas" text="Gestionar Dietas" />
+    <Button onAction="#handleEditarPerfil" text="Cambio de perfil" />
+</VBox>

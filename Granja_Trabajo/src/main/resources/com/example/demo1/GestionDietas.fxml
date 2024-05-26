@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.GestionDietasController">
+    <children>
+        <TableView fx:id="tablaDietas" layoutX="20.0" layoutY="23.0" prefHeight="208.0" prefWidth="334.0">
+            <columns>
+                <TableColumn fx:id="columnaAnimal" prefWidth="100.0" text="Animal" />
+                <TableColumn fx:id="columnaAlimento" prefWidth="100.0" text="Alimento" />
+                <TableColumn fx:id="columnaCantidad" prefWidth="100.0" text="Cantidad" />
+            </columns>
+        </TableView>
+        <TextField fx:id="campoAnimal" layoutX="20.0" layoutY="240.0" promptText="Animal" />
+        <TextField fx:id="campoAlimento" layoutX="140.0" layoutY="240.0" promptText="Alimento" />
+        <TextField fx:id="campoCantidad" layoutX="260.0" layoutY="240.0" promptText="Cantidad" />
+        <Button fx:id="botonAgregar" layoutX="380.0" layoutY="240.0" mnemonicParsing="false" onAction="#agregarDieta" text="Agregar" />
+        <Button fx:id="botonEliminar" layoutX="20.0" layoutY="280.0" mnemonicParsing="false" onAction="#eliminarDieta" text="Eliminar" />
+        <Button fx:id="volverBtn" layoutX="385.0" layoutY="97.0" onAction="#handleVolverAction" prefHeight="47.0" prefWidth="156.0" text="Volver a Dar de Comer" />
+        <Button fx:id="botonActualizar" layoutX="100.0" layoutY="280.0" mnemonicParsing="false" onAction="#actualizarDieta" text="Actualizar" />
+        <ImageView fx:id="fotoPerfilView" fitHeight="100.0" fitWidth="100.0" layoutX="332.0" layoutY="109.0" />
+    </children>
+
+</AnchorPane>
+

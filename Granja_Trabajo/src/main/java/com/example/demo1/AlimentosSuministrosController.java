@@ -6,7 +6,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -15,18 +20,17 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class AlimentosSuministrosController implements CerrarVentana{
+public class AlimentosSuministrosController {
     Connection connection;
 
+    @FXML
+    private Button botonCerrarSesion;
     @FXML
     private TextField fieldAlimentosSuministros;
     @FXML
     private TextField fieldCantidad;
     @FXML
     private TextField fieldPrecio;
-
-    @FXML
-    private Button botonCerrarSesion;
     @FXML
     private Button buttonInsertar;
     private HelloApplication a;
@@ -36,24 +40,26 @@ public class AlimentosSuministrosController implements CerrarVentana{
     }
 
     @FXML
-    private void inserTarDatos() throws SQLException{
+    private void inserTarDatos() throws SQLException {
         String nombre = fieldAlimentosSuministros.getText();
-        String puesto = fieldCantidad.getText();
-        String salarioStr = fieldPrecio.getText();
+        String cantidadStr = fieldCantidad.getText(); // Usar el valor correcto del campo de cantidad
+        String precioStr = fieldPrecio.getText(); // Usar el valor correcto del campo de precio
         int stock;
+        int precio;
 
         try {
-            stock = Integer.parseInt(salarioStr);
+            stock = Integer.parseInt(cantidadStr); // Convertir correctamente el valor de cantidad a stock
+            precio = Integer.parseInt(precioStr); // Convertir correctamente el valor de precio a entero
         } catch (NumberFormatException e) {
             mostrarError("Inserte un numero entero por favor.");
             return;
         }
-        if (nombre.isEmpty() || puesto == null || salarioStr.isEmpty()) {
+        if (nombre.isEmpty() || cantidadStr.isEmpty() || precioStr.isEmpty()) {
             mostrarError("Rellene todo por favor.");
         } else {
             // Insertar datos en la base de datos
-            if (insertarAlimentoEnBD(nombre, stock, stock)) {
-                mostrarMensaje("Alimento " + nombre + " introducido en nuestra base de dats, gracias.");
+            if (insertarAlimentoEnBD(nombre, stock, precio)) {
+                mostrarMensaje("Alimento " + nombre + " introducido en nuestra base de datos, gracias.");
                 limpiarCampos();
             } else {
                 // Mostrar mensaje de error
@@ -102,8 +108,13 @@ public class AlimentosSuministrosController implements CerrarVentana{
     }
     public void cambioVentana(ActionEvent event)
     {
-        CerrarVentana.cerrarVentana(event);
+        cerrarVentana(event);
         a.mostrarVentanaSecundaria();
+    }
+    public static void cerrarVentana(ActionEvent e) {
+        Node source = (Node) e.getSource();     //Me devuelve el elemento al que hice click
+        Stage stage = (Stage) source.getScene().getWindow();    //Me devuelve la ventana donde se encuentra el elemento
+        stage.close();
     }
 
     @FXML
@@ -136,6 +147,10 @@ public class AlimentosSuministrosController implements CerrarVentana{
 
     private void redirigirALogin() {
         try {
+            // Obtener la ventana actual y cerrarla
+            Stage stageActual = (Stage) botonCerrarSesion.getScene().getWindow();
+            stageActual.close();
+
             // Cargar la nueva ventana de login
             FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
             Parent root = loader.load();
@@ -143,13 +158,28 @@ public class AlimentosSuministrosController implements CerrarVentana{
             stage.setTitle("Login");
             stage.setScene(new Scene(root));
             stage.show();
-
-            // Cerrar la ventana actual
-            Stage stageActual = (Stage) botonCerrarSesion.getScene().getWindow();
-            stageActual.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    @FXML
+    private ImageView fotoPerfilView;
+    @FXML
+    private void initialize() {
+        UsuarioManager.rutaFotoPerfilProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                fotoPerfilView.setImage(new Image(newValue));
+            }
+        });
 
+        // Inicializar la imagen de perfil al cargar la pantalla
+        if (UsuarioManager.getUsuarioActual() != null) {
+            String rutaFotoPerfil = UsuarioManager.getUsuarioActual().getRutaFotoPerfil();
+            if (rutaFotoPerfil != null) {
+                fotoPerfilView.setImage(new Image(rutaFotoPerfil));
+            } else {
+                fotoPerfilView.setImage(new Image(getClass().getResource("/Imagenes/6662120.png").toString()));
+            }
+        }
+    }
 }

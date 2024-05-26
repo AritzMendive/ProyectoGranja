@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="200.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.EditarAnimalController">
+    <children>
+        <VBox alignment="CENTER" layoutX="20.0" layoutY="20.0" spacing="10.0">
+            <children>
+                <Label text="Nombre del Animal" />
+                <TextField fx:id="nombreField" />
+                <Label text="Stock" />
+                <TextField fx:id="stockField" />
+                <Button onAction="#guardarCambios" text="Guardar" />
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

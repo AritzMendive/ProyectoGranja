@@ -8,24 +8,35 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import java.io.IOException;
 
 import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class AlimentosTablas implements Initializable, CerrarVentana {
+public class AlimentosTablas implements Initializable  {
 
     public Button ListaBtn;
-    public TableColumn<Alimento,String> TablaNombre;
-    public TableColumn<Alimento,Integer> TablaStock;
-    public TableColumn<Alimento,Integer> TablaPrecio;
-    public TableView<Alimento> TablaPorColumna;
+    public TableColumn<Alimento, String> TablaNombre;
+    public TableColumn<Alimento, Integer> TablaStock;
     @FXML
-    ListView<Alimento> alimentosView;
-    ObservableList<Alimento> listaAlimentos = FXCollections.observableArrayList();
-    ArrayList<Alimento> listaA = new ArrayList<>();
+    private Button botonCerrarSesion;
+    public TableColumn<Alimento, Integer> TablaPrecio;
+    public TableView<Alimento> TablaPorColumna;
+    private ObservableList<Alimento> listaAlimentos = FXCollections.observableArrayList();
+    private HelloApplication a;
+    private AlimentosSuministrosController controllerError;
+
+    public AlimentosTablas() {
+        a = new HelloApplication();
+    }
 
     @FXML
     private TextField fieldNombre;
@@ -35,36 +46,41 @@ public class AlimentosTablas implements Initializable, CerrarVentana {
 
     @FXML
     private TextField fieldPrecio;
-    private HelloApplication a;
-    AlimentosSuministrosController controllerError;
-    public AlimentosTablas()
-    {
-        a = new HelloApplication();
-    }
-    ObservableList<Alimento> list = FXCollections.observableArrayList(
-            refrescarDatos()
-    );
+
     @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {
         controllerError = new AlimentosSuministrosController();
         TablaPorColumna.setItems(listaAlimentos);
-        TablaNombre.setCellValueFactory(new PropertyValueFactory<Alimento,String>("nombre"));
-        TablaStock.setCellValueFactory(new PropertyValueFactory<Alimento,Integer>("stock"));
-        TablaPrecio.setCellValueFactory(new PropertyValueFactory<Alimento,Integer>("precio"));
-        alimentosView.setCellFactory(lv -> new ListCell<Alimento>() {
+        TablaNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        TablaStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        TablaPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
+
+        TablaPorColumna.setRowFactory(tv -> new TableRow<Alimento>() {
             @Override
             protected void updateItem(Alimento item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null) {
-                    setText(null);
                     setStyle("");
                 } else {
-                    setText(item.toString());
                     setStyle(getRowStyle(item.getStock()));
+                }
+                UsuarioManager.rutaFotoPerfilProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue != null) {
+                        fotoPerfilView.setImage(new Image(newValue));
+                    }
+                });
+
+                // Inicializar la imagen de perfil al cargar la pantalla
+                if (UsuarioManager.getUsuarioActual() != null) {
+                    String rutaFotoPerfil = UsuarioManager.getUsuarioActual().getRutaFotoPerfil();
+                    if (rutaFotoPerfil != null) {
+                        fotoPerfilView.setImage(new Image(rutaFotoPerfil));
+                    }
                 }
             }
         });
-        TablaPorColumna.setItems(list);
+
+        refrescarDatos(); // Para cargar los datos inicialmente
     }
 
     private String getRowStyle(int stock) {
@@ -77,52 +93,52 @@ public class AlimentosTablas implements Initializable, CerrarVentana {
         }
     }
 
-
-
-    public ObservableList<Alimento> refrescarDatos() {
-        listaAlimentos.clear();
+    @FXML
+    public void refrescarDatos() {
+        listaAlimentos.clear(); // Limpiar la lista antes de actualizar
 
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/granja", "root", "root")) {
-            String selectSQL = "SELECT * FROM Alimentos";
+            String selectSQL = "SELECT * FROM alimentos";
             try (PreparedStatement statement = connection.prepareStatement(selectSQL)) {
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next()) {
                     String nombre = resultSet.getString("nombre");
                     int stock = resultSet.getInt("stock");
                     int precio = resultSet.getInt("precio");
+                    int id = resultSet.getInt("IdAlimento");
 
-                    Alimento nuevoAlimento = new Alimento(nombre, stock, precio);
-                    listaAlimentos.add(nuevoAlimento);
+                    Alimento nuevoAlimento = new Alimento(nombre, stock, precio, id);
+                    listaAlimentos.add(nuevoAlimento); // Añadir cada alimento a la lista observable
                 }
-                return listaAlimentos;
             }
         } catch (SQLException e) {
             controllerError.mostrarError("Error al cargar los alimentos.");
             e.printStackTrace();
         }
-        return null;
-    }
-
-    public void mostrarInfoAlimento(javafx.scene.input.MouseEvent mouseEvent) {
-        String nombre = TablaPorColumna.getSelectionModel().getSelectedItem().getNombre();
-        fieldNombre.setText(nombre);
-        fieldStock.setText(String.valueOf(TablaPorColumna.getSelectionModel().getSelectedItem().getStock()));
-        fieldPrecio.setText(String.valueOf(TablaPorColumna.getSelectionModel().getSelectedItem().getPrecio()));
-
     }
 
     @FXML
-    public void eliminarAlimento(ActionEvent actionEvent) {
+    public void mostrarInfoAlimento(javafx.scene.input.MouseEvent mouseEvent) {
         Alimento alimentoSeleccionado = TablaPorColumna.getSelectionModel().getSelectedItem();
         if (alimentoSeleccionado != null) {
+            fieldNombre.setText(alimentoSeleccionado.getNombre());
+            fieldStock.setText(String.valueOf(alimentoSeleccionado.getStock()));
+            fieldPrecio.setText(String.valueOf(alimentoSeleccionado.getPrecio()));
+        }
+    }
+
+    @FXML
+    public void eliminarEmpleado(ActionEvent actionEvent) {
+        Alimento empleadoSeleccionado = TablaPorColumna.getSelectionModel().getSelectedItem();
+        if (empleadoSeleccionado != null) {
             try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/granja", "root", "root")) {
-                String deleteSQL = "DELETE FROM Alimentos WHERE Nombre = ?";
+                String deleteSQL = "DELETE FROM Alimentos WHERE IdAlimento = ?";
                 try (PreparedStatement statement = connection.prepareStatement(deleteSQL)) {
-                    statement.setString(1, alimentoSeleccionado.getNombre());
+                    statement.setInt(1, empleadoSeleccionado.getId());
                     int filasEliminadas = statement.executeUpdate();
                     if (filasEliminadas > 0) {
                         controllerError.mostrarMensaje("Alimento eliminado correctamente.");
-                        listaAlimentos.remove(alimentoSeleccionado);
+                        listaAlimentos.remove(empleadoSeleccionado);
                     } else {
                         controllerError.mostrarError("No se pudo eliminar el alimento.");
                     }
@@ -134,5 +150,109 @@ public class AlimentosTablas implements Initializable, CerrarVentana {
         } else {
             controllerError.mostrarError("Por favor, seleccione un alimento de la lista.");
         }
+    }
+
+    @FXML
+    public void cambioVista(ActionEvent event) {
+        cerrarVentana(event);
+        a.mostrarVentanaCinco();
+    }
+
+    public static void cerrarVentana(ActionEvent e) {
+        Node source = (Node) e.getSource(); // Me devuelve el elemento al que hice click
+        Stage stage = (Stage) source.getScene().getWindow(); // Me devuelve la ventana donde se encuentra el elemento
+        stage.close();
+    }
+
+    @FXML
+    private void handleCerrarSesion(ActionEvent event) {
+        mostrarConfirmacionCerrarSesion();
+    }
+
+    private void mostrarConfirmacionCerrarSesion() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmación de cierre de sesión");
+        alert.setHeaderText(null);
+        alert.setContentText("¿Está seguro de que desea cerrar sesión?");
+
+        ButtonType buttonTypeSi = new ButtonType("Sí");
+        ButtonType buttonTypeNo = new ButtonType("No");
+
+        alert.getButtonTypes().setAll(buttonTypeSi, buttonTypeNo);
+
+        alert.showAndWait().ifPresent(response -> {
+            if (response == buttonTypeSi) {
+                cerrarSesion();
+            }
+        });
+    }
+
+    private void cerrarSesion() {
+        System.out.println("Sesión cerrada");
+        redirigirALogin();
+    }
+
+    private void redirigirALogin() {
+        try {
+            // Obtener la ventana actual y cerrarla
+            Stage stageActual = (Stage) botonCerrarSesion.getScene().getWindow();
+            stageActual.close();
+
+            // Cargar la nueva ventana de login
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Login");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private ImageView fotoPerfilView;
+
+    @FXML
+    private void initialize() {
+        UsuarioManager.rutaFotoPerfilProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                fotoPerfilView.setImage(new Image(newValue));
+            }
+        });
+
+        // Inicializar la imagen de perfil al cargar la pantalla
+        if (UsuarioManager.getUsuarioActual() != null) {
+            String rutaFotoPerfil = UsuarioManager.getUsuarioActual().getRutaFotoPerfil();
+            if (rutaFotoPerfil != null) {
+                fotoPerfilView.setImage(new Image(rutaFotoPerfil));
+            }
+        }
+    }
+
+    @FXML
+    private void handleEditarPerfil(ActionEvent event) {
+        mostrarVentana("editarPerfil.fxml", "Editar perfil");
+    }
+
+    private void mostrarVentana(String fxml, String title) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle(title);
+            stage.setScene(new Scene(root, 800, 600));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            mostrarError("Error al cargar la ventana: " + e.getMessage());
+        }
+    }
+    private void mostrarError(String mensaje) {
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 }

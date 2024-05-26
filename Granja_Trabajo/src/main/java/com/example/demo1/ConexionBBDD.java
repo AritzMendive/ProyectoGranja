@@ -8,18 +8,20 @@ import java.util.ArrayList;
 
 public class ConexionBBDD {
 
-    Connection connection;
+    private Connection connection;
     Statement statement;
 
     public ConexionBBDD() throws SQLException {
-        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/", "root", "root");
+        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/granja", "root", "root");
         statement = connection.createStatement();
     }
 
+    public Connection getConnection() {
+        return connection;
+    }
 
     public void creacionBBDD() throws FileNotFoundException {
         BufferedReader br = new BufferedReader(new FileReader("src/main/BBDD/granja.sql"));
-
         try {
             String st;
             ArrayList<String> lineas = new ArrayList<>();
@@ -27,28 +29,40 @@ public class ConexionBBDD {
                 lineas.add(st);
             }
 
-
             for (String linea : lineas) {
                 statement.executeUpdate(linea);
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
-
     public void migracionClienteProveedor() throws SQLException {
-        statement.execute("use granja");
-        statement.execute("CREATE PROCEDURE if not exists ActualizarRoles()\n" +
+        String sql = "CREATE PROCEDURE if not exists ActualizarRoles()\n" +
                 "BEGIN\n" +
                 "    UPDATE Usuarios\n" +
                 "    SET Rol = 'Proveedor'\n" +
                 "    WHERE Rol = 'Cliente';\n" +
-                "END");
+                "END";
+        statement.execute(sql);
     }
 
-
-
+    public void close() {
+        try {
+            if (statement != null && !statement.isClosed()) {
+                statement.close();
+            }
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

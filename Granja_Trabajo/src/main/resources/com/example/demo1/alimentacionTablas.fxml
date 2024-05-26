@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.AlimentosTablas">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.AlimentosTablas">
+
     <children>
-        <Button fx:id="botonCerrarSesion" layoutX="257.0" layoutY="351.0" mnemonicParsing="false" onAction="#handleCerrarSesion" text="Cerrar Sesión" />
-        <Button id="buttonRefrescar" layoutX="373.0" layoutY="307.0" onAction="#refrescarDatos" prefHeight="44.0" prefWidth="190.0" text="ACTUALIZAR" textFill="#1ff82a">
+        <Button fx:id="botonCerrarSesion" layoutX="563.0" layoutY="17.0" mnemonicParsing="false" onAction="#handleCerrarSesion" text="X" />
+        <Button id="buttonRefrescar" layoutX="241.0" layoutY="307.0" onAction="#refrescarDatos" prefHeight="44.0" prefWidth="190.0" text="ACTUALIZAR" textFill="#1ff82a">
             <font>
                 <Font name="System Bold" size="20.0" />
             </font>
@@ -22,8 +19,9 @@
             <font>
                 <Font name="System Bold" size="20.0" />
             </font>
+
         </Button>
-        <VBox alignment="TOP_CENTER" layoutX="293.0" layoutY="29.0" prefHeight="255.0" prefWidth="270.0" spacing="20.0">
+        <VBox alignment="TOP_CENTER" layoutX="297.0" layoutY="31.0" prefHeight="255.0" prefWidth="270.0" spacing="20.0">
             <children>
                 <TextField id="fieldNombre" fx:id="fieldNombre" alignment="CENTER" editable="false" style="-fx-background-color: transparent;;" text="Nombre">
                     <font>
@@ -40,19 +38,23 @@
                         <Font size="15.0" />
                     </font>
                 </TextField>
-            <Button fx:id="ListaBtn" mnemonicParsing="false" onAction="#cambioVista" text="Ver Lista" />
+                <Button fx:id="ListaBtn" mnemonicParsing="false" onAction="#cambioVista" text="Ver Lista" />
+              <ImageView fx:id="fotoPerfilView" fitHeight="71.0" fitWidth="87.0" />
             </children>
             <opaqueInsets>
                 <Insets />
             </opaqueInsets>
+
         </VBox>
-      <ListView fx:id="alimentosView" layoutX="20.0" layoutY="18.0" onMouseClicked="#mostrarInfoAlimento" prefHeight="255.0" prefWidth="240.0" />
-      <TableView fx:id="TablaPorColumna" layoutX="20.0" layoutY="73.0" onMouseClicked="#mostrarInfoAlimento" prefHeight="200.0" prefWidth="240.0">
-        <columns>
-          <TableColumn fx:id="TablaNombre" prefWidth="80.0" text="Nombre" />
-          <TableColumn fx:id="TablaStock" prefWidth="80.0" text="Stock" />
-          <TableColumn fx:id="TablaPrecio" prefWidth="80.0" text="Precio" />
-        </columns>
-      </TableView>
+
+        <ListView fx:id="alimentosView" layoutX="20.0" layoutY="18.0" onMouseClicked="#mostrarInfoAlimento" prefHeight="255.0" prefWidth="240.0" />
+        <Button layoutX="88.0" layoutY="30.0" onAction="#handleEditarPerfil" text="Cambio de perfil" />
+        <TableView fx:id="TablaPorColumna" layoutX="20.0" layoutY="73.0" onMouseClicked="#mostrarInfoAlimento" prefHeight="200.0" prefWidth="240.0">
+            <columns>
+                <TableColumn fx:id="TablaNombre" prefWidth="80.0" text="Nombre" />
+                <TableColumn fx:id="TablaStock" prefWidth="80.0" text="Stock" />
+                <TableColumn fx:id="TablaPrecio" prefWidth="80.0" text="Precio" />
+            </columns>
+        </TableView>
     </children>
 </AnchorPane>

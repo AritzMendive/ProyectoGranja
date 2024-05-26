@@ -47,12 +47,34 @@ public class HelloApplication extends Application {
     }
     public void mostrarVentanaTres() {
         try {
-            FXMLLoader loader = new FXMLLoader(AlimentosSuministrosController.class.getResource("alimentacion.fxml"));
+            FXMLLoader loader = new FXMLLoader(AlimentosSuministrosController.class.getResource("dardecomer.fxml"));
             Scene scene = new Scene(loader.load(), 800, 600);
             stagePrincipal.setTitle("Granja");
             stagePrincipal.setScene(scene);
             stagePrincipal.show();
 
+        } catch (Exception ignored) {
+        }
+    }
+
+    public void mostrarVentanaCuatro() {
+        try {
+            FXMLLoader loader = new FXMLLoader(AlimentosSuministrosController.class.getResource("dashboard.fxml"));
+            Scene scene = new Scene(loader.load(), 800, 600);
+            stagePrincipal.setTitle("Ventana Administración granja");
+            stagePrincipal.setScene(scene);
+            stagePrincipal.show();
+        } catch (Exception ignored) {
+        }
+    }
+
+    public void mostrarVentanaCinco() {
+        try {
+            FXMLLoader loader = new FXMLLoader(AlimentosSuministrosController.class.getResource("alimentacion.fxml"));
+            Scene scene = new Scene(loader.load(), 800, 600);
+            stagePrincipal.setTitle("Ventana para insertar alimentos");
+            stagePrincipal.setScene(scene);
+            stagePrincipal.show();
         } catch (Exception ignored) {
         }
     }

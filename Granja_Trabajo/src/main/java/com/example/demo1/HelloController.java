@@ -3,46 +3,51 @@ package com.example.demo1;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Objects;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.stage.Stage;
-
-import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
-public class HelloController implements CerrarVentana{
+public class HelloController {
 
-    public Button botonLogIn;
+    @FXML
+    private Button botonLogIn;
     @FXML
     private TextField nombreTxtF;
-
     @FXML
     private PasswordField contrasenyaTxtF;
     @FXML
     private Label welcomeText;
     @FXML
+    private Button botonCerrarSesion;
+    @FXML
+    private ImageView fotoPerfilView;
     private HelloApplication a;
 
-    @FXML
-    private Button botonCerrarSesion;
-
-    public HelloController()
-    {
+    public HelloController() {
         a = new HelloApplication();
     }
+
+    @FXML
+    public void initialize() {
+        Usuario usuario = UsuarioManager.getUsuarioActual();
+        if (usuario != null && usuario.getRutaFotoPerfil() != null) {
+            fotoPerfilView.setImage(new Image(usuario.getRutaFotoPerfil()));
+        } else {
+            // Set a default image if no profile picture is set
+            fotoPerfilView.setImage(new Image(getClass().getResource("/Imagenes/6662120.png").toString()));
+        }
+    }
+
     @FXML
     protected void onHelloButtonClick() {
         Alert error = new Alert(Alert.AlertType.ERROR);
@@ -53,49 +58,71 @@ public class HelloController implements CerrarVentana{
     }
 
     @FXML
-    protected String ComprobarUsuario() throws SQLException {
+    protected Usuario ComprobarUsuario() throws SQLException {
         ConexionBBDD connection = new ConexionBBDD();
+        connection.statement.execute("USE granja");
 
-        connection.statement.execute("use granja");
         String nombre = nombreTxtF.getText();
         String contrasenya = contrasenyaTxtF.getText();
 
-        ResultSet resultSet = connection.statement.executeQuery("select Nombre, Contraseña, Rol from usuarios where Nombre = '" + nombre + "' AND Contraseña = '" + contrasenya + "'");
-        if (resultSet.next()) {
-            String nombreEnBaseDeDatos = resultSet.getString("Nombre");
-            String rol = resultSet.getString("Rol");
-            if (nombreEnBaseDeDatos.equals(nombre)) {
-                System.out.println(rol);
-                return rol;
+        String query = "SELECT IdUsuario, Nombre, Contraseña, Rol, FotoPerfil FROM Usuarios WHERE Nombre = ? AND Contraseña = ?";
+        try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
+            preparedStatement.setString(1, nombre);
+            preparedStatement.setString(2, contrasenya);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int id = resultSet.getInt("IdUsuario");
+                String rol = resultSet.getString("Rol");
+                String nombreUsuario = resultSet.getString("Nombre");
+                String contrasenaUsuario = resultSet.getString("Contraseña");
+                String fotoPerfil = resultSet.getString("FotoPerfil");
+                return new Usuario(id, nombreUsuario, contrasenaUsuario, rol, fotoPerfil);
+            } else {
+                System.out.println("Usuario no encontrado");
+                return null;
             }
-        } else {
-            System.out.println("Usuario no encontrado");
-            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            connection.close();
         }
-        return null;
     }
+
     @FXML
     protected void loginButton(ActionEvent event) throws SQLException {
-        if (Objects.equals(ComprobarUsuario(), "Proveedor"))
-        {
-            CerrarVentana.cerrarVentana(event);
-            a.mostrarVentanaSecundaria();
-        }
-        else if (Objects.equals(ComprobarUsuario(), "Admin"))
-        {
-            CerrarVentana.cerrarVentana(event);
-            a.mostrarVentanaPrincipal();
-        }
-        else if (Objects.equals(ComprobarUsuario(), "Granjero"))
-        {
-            CerrarVentana.cerrarVentana(event);
-            a.mostrarVentanaPrincipal();
-        }
-        else
-        {
-            onHelloButtonClick();
+        Usuario usuario = ComprobarUsuario();
+        if (usuario != null) {
+            UsuarioManager.setUsuarioActual(usuario); // Configurar el usuario actual
+            cerrarVentana(event);
+            if (Objects.equals(usuario.getRol(), "Proveedor")) {
+                a.mostrarVentanaSecundaria();
+            } else if (Objects.equals(usuario.getRol(), "Admin")) {
+                a.mostrarVentanaCuatro();
+            } else if (Objects.equals(usuario.getRol(), "Granjero")) {
+                a.mostrarVentanaTres();
+            } else {
+                mostrarError("Usuario no encontrado o contraseña incorrecta.");
+            }
+        } else {
+            mostrarError("Usuario no encontrado o contraseña incorrecta.");
         }
     }
+
+    private void mostrarError(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
+
+    private void cerrarVentana(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
+    }
+
     @FXML
     private void handleCerrarSesion(ActionEvent event) {
         mostrarConfirmacionCerrarSesion();
@@ -126,6 +153,10 @@ public class HelloController implements CerrarVentana{
 
     private void redirigirALogin() {
         try {
+            // Obtener la ventana actual y cerrarla
+            Stage stageActual = (Stage) botonCerrarSesion.getScene().getWindow();
+            stageActual.close();
+
             // Cargar la nueva ventana de login
             FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
             Parent root = loader.load();
@@ -133,10 +164,6 @@ public class HelloController implements CerrarVentana{
             stage.setTitle("Login");
             stage.setScene(new Scene(root));
             stage.show();
-
-            // Cerrar la ventana actual
-            Stage stageActual = (Stage) botonCerrarSesion.getScene().getWindow();
-            stageActual.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

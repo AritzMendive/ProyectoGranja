@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.Dardecomer">
-   <children>
-      <TableView fx:id="tablaanimales" layoutX="34.0" layoutY="38.0" prefHeight="200.0" prefWidth="200.0">
-        <columns>
-          <TableColumn fx:id="animalc" prefWidth="75.0" text="Animal" />
-          <TableColumn fx:id="stockc" prefWidth="75.0" text="Stock" />
-        </columns>
-      </TableView>
-      <Button fx:id="NAnimalBTN" layoutX="34.0" layoutY="347.0" mnemonicParsing="false" text="Nuevo Animal" />
-      <Button fx:id="EliminarBTN" layoutX="134.0" layoutY="347.0" mnemonicParsing="false" text="Eliminar" />
-      <Button fx:id="EditarBTN" layoutX="211.0" layoutY="347.0" mnemonicParsing="false" text="Editar" />
-      <Button fx:id="ComerBTN" layoutX="286.0" layoutY="347.0" mnemonicParsing="false" text="Dar De Comer" />
-      <Button fx:id="MataderoBTN" layoutX="415.0" layoutY="347.0" mnemonicParsing="false" text="Al Matadero" />
-   </children>
+    <children>
+        <TableView fx:id="tablaanimales" layoutX="34.0" layoutY="38.0" prefHeight="200.0" prefWidth="200.0">
+            <columns>
+                <TableColumn fx:id="animalc" prefWidth="75.0" text="Animal" />
+                <TableColumn fx:id="stockc" prefWidth="75.0" text="Stock" />
+            </columns>
+        </TableView>
+        <Button layoutX="264.0" layoutY="40.0" onAction="#handleEditarPerfil" text="Cambio de perfil" />
+        <Button fx:id="NAnimalBTN" layoutX="34.0" layoutY="347.0" mnemonicParsing="false" onAction="#nuevoAnimal" text="Nuevo Animal" />
+        <Button fx:id="EliminarBTN" layoutX="134.0" layoutY="347.0" mnemonicParsing="false" onAction="#eliminarAnimal" text="Eliminar" />
+        <Button fx:id="EditarBTN" layoutX="211.0" layoutY="347.0" mnemonicParsing="false" onAction="#editarAnimal" text="Editar" />
+        <Button fx:id="ComerBTN" layoutX="286.0" layoutY="347.0" mnemonicParsing="false" onAction="#darDeComer" text="Dar De Comer" />
+        <Button fx:id="botonCerrarSesion" layoutX="562.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleCerrarSesion" text="X" />
+        <ImageView fx:id="fotoPerfilView" fitHeight="100.0" fitWidth="100.0" layoutX="266.0" layoutY="88.0" />
+        <Button fx:id="GestionDietasBTN" layoutX="409.0" layoutY="347.0" mnemonicParsing="false" onAction="#gestionarDietas" text="Gestionar Dietas" />
+    </children>
 </AnchorPane>
