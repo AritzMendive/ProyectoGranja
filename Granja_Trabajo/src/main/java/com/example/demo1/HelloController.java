@@ -31,6 +31,8 @@ public class HelloController {
     private Button botonCerrarSesion;
     @FXML
     private ImageView fotoPerfilView;
+    @FXML
+    private ImageView defaultImageView;
     private HelloApplication a;
 
     public HelloController() {
@@ -42,9 +44,10 @@ public class HelloController {
         Usuario usuario = UsuarioManager.getUsuarioActual();
         if (usuario != null && usuario.getRutaFotoPerfil() != null) {
             fotoPerfilView.setImage(new Image(usuario.getRutaFotoPerfil()));
+            defaultImageView.setVisible(false); // Oculta la imagen predeterminada
         } else {
-            // Set a default image if no profile picture is set
-            fotoPerfilView.setImage(new Image(getClass().getResource("/Imagenes/6662120.png").toString()));
+            fotoPerfilView.setImage(null);
+            defaultImageView.setVisible(true); // Muestra la imagen predeterminada
         }
     }
 
@@ -90,7 +93,6 @@ public class HelloController {
             connection.close();
         }
     }
-
 
     @FXML
     protected void loginButton(ActionEvent event) throws SQLException {
