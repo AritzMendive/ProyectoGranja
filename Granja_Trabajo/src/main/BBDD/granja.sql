@@ -1,7 +1,19 @@
 CREATE DATABASE IF NOT EXISTS granja;
 
-
 USE granja;
+
+
+
+CREATE TABLE IF NOT EXISTS reportes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    descripcion TEXT NOT NULL,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
 
 -- Crear tabla Usuarios
 CREATE TABLE IF NOT EXISTS Usuarios (
@@ -134,3 +146,7 @@ DELIMITER ;
 
 -- Llamar al procedimiento para añadir la columna FotoPerfil
 CALL add_fotoperfil_column_if_not_exists();
+
+ALTER TABLE Usuarios ADD COLUMN Descripcion TEXT;
+
+
