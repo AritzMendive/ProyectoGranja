@@ -6,6 +6,7 @@ public class Usuario {
     private String contrasena;
     private String rol;
     private String rutaFotoPerfil;
+    private String descripcion;
 
     public Usuario(int id, String nombre, String contrasena, String rol, String rutaFotoPerfil) {
         this.id = id;
@@ -13,8 +14,16 @@ public class Usuario {
         this.contrasena = contrasena;
         this.rol = rol;
         this.rutaFotoPerfil = rutaFotoPerfil;
+        this.descripcion = descripcion;
     }
 
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
     public int getId() {
         return id;
     }

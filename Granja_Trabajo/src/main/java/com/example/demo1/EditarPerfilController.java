@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -26,6 +27,12 @@ public class EditarPerfilController {
 
     @FXML
     private TextField contrasenaField;
+
+    @FXML
+    private TextField confirmarContrasenaField;
+
+    @FXML
+    private TextArea descripcionField;
 
     @FXML
     private ImageView fotoPerfilView;
@@ -48,6 +55,8 @@ public class EditarPerfilController {
         if (usuario != null) {
             nombreField.setText(usuario.getNombre());
             contrasenaField.setText(usuario.getContrasena());
+            confirmarContrasenaField.setText(usuario.getContrasena());
+            descripcionField.setText(usuario.getDescripcion());
             rutaFotoPerfil = usuario.getRutaFotoPerfil();
             if (rutaFotoPerfil != null) {
                 fotoPerfilView.setImage(new Image(rutaFotoPerfil));
@@ -72,16 +81,24 @@ public class EditarPerfilController {
     private void guardarCambios() {
         String nombre = nombreField.getText();
         String contrasena = contrasenaField.getText();
+        String confirmarContrasena = confirmarContrasenaField.getText();
+        String descripcion = descripcionField.getText();
         int idUsuario = UsuarioManager.getUsuarioActual().getId(); // Asume que el ID del usuario es conocido
 
-        String sql = "UPDATE Usuarios SET Nombre = ?, Contraseña = ?, FotoPerfil = ? WHERE IdUsuario = ?";
+        if (!contrasena.equals(confirmarContrasena)) {
+            mostrarError("Contraseñas diferentes");
+            return;
+        }
+
+        String sql = "UPDATE Usuarios SET Nombre = ?, Contraseña = ?, FotoPerfil = ?, Descripcion = ? WHERE IdUsuario = ?";
 
         try (Connection connection = conexion.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, nombre);
             statement.setString(2, contrasena);
             statement.setString(3, rutaFotoPerfil);
-            statement.setInt(4, idUsuario);
+            statement.setString(4, descripcion);
+            statement.setInt(5, idUsuario);
             statement.executeUpdate();
 
             // Actualizar la información del usuario en UsuarioManager
@@ -90,10 +107,14 @@ public class EditarPerfilController {
                 usuario.setNombre(nombre);
                 usuario.setContrasena(contrasena);
                 usuario.setRutaFotoPerfil(rutaFotoPerfil);
+                usuario.setDescripcion(descripcion);
             }
 
             // Notificar el cambio de la imagen de perfil
             UsuarioManager.notificarCambioFotoPerfil();
+
+            // Mostrar mensaje de éxito
+            mostrarMensaje("Contraseña cambiada con éxito");
 
             // Redirigir a la ventana de inicio de sesión
             redirigirALogin();
@@ -150,5 +171,21 @@ public class EditarPerfilController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void mostrarError(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
+
+    private void mostrarMensaje(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Información");
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 }
