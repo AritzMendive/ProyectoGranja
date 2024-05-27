@@ -63,7 +63,7 @@ public class HelloController {
     @FXML
     protected Usuario ComprobarUsuario() throws SQLException {
         ConexionBBDD connection = new ConexionBBDD();
-        connection.statement.execute("USE granja");
+        connection.statement.execute("USE railway");
 
         String nombre = nombreTxtF.getText();
         String contrasenya = contrasenyaTxtF.getText();

@@ -20,7 +20,7 @@ public class ConexionBBDD {
         return connection;
     }
 
-    public void creacionBBDD() throws FileNotFoundException {
+/*    public void creacionBBDD() throws FileNotFoundException {
         BufferedReader br = new BufferedReader(new FileReader("src/main/BBDD/granja.sql"));
         try {
             String st;
@@ -41,7 +41,7 @@ public class ConexionBBDD {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 
     public void migracionClienteProveedor() throws SQLException {
         String sql = "CREATE PROCEDURE if not exists ActualizarRoles()\n" +

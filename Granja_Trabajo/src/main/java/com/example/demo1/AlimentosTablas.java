@@ -131,7 +131,7 @@ public class AlimentosTablas implements Initializable  {
     public void eliminarEmpleado(ActionEvent actionEvent) {
         Alimento empleadoSeleccionado = TablaPorColumna.getSelectionModel().getSelectedItem();
         if (empleadoSeleccionado != null) {
-            try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/granja", "root", "root")) {
+            try (Connection connection = DriverManager.getConnection("jdbc:mysql://monorail.proxy.rlwy.net:55810/railway", "root", "MNvVtHFDEuiIcdlCusLWfBxfFqPvemBP")) {
                 String deleteSQL = "DELETE FROM Alimentos WHERE IdAlimento = ?";
                 try (PreparedStatement statement = connection.prepareStatement(deleteSQL)) {
                     statement.setInt(1, empleadoSeleccionado.getId());
