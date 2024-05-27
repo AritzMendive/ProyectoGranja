@@ -65,7 +65,7 @@ public class HelloController {
         String nombre = nombreTxtF.getText();
         String contrasenya = contrasenyaTxtF.getText();
 
-        String query = "SELECT IdUsuario, Nombre, Contraseña, Rol, FotoPerfil FROM Usuarios WHERE Nombre = ? AND Contraseña = ?";
+        String query = "SELECT IdUsuario, Nombre, Contraseña, Rol, FotoPerfil, Descripcion FROM Usuarios WHERE Nombre = ? AND Contraseña = ?";
         try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
             preparedStatement.setString(1, nombre);
             preparedStatement.setString(2, contrasenya);
@@ -77,7 +77,8 @@ public class HelloController {
                 String nombreUsuario = resultSet.getString("Nombre");
                 String contrasenaUsuario = resultSet.getString("Contraseña");
                 String fotoPerfil = resultSet.getString("FotoPerfil");
-                return new Usuario(id, nombreUsuario, contrasenaUsuario, rol, fotoPerfil);
+                String descripcion = resultSet.getString("Descripcion");
+                return new Usuario(id, nombreUsuario, contrasenaUsuario, rol, fotoPerfil, descripcion);
             } else {
                 System.out.println("Usuario no encontrado");
                 return null;
@@ -89,6 +90,7 @@ public class HelloController {
             connection.close();
         }
     }
+
 
     @FXML
     protected void loginButton(ActionEvent event) throws SQLException {

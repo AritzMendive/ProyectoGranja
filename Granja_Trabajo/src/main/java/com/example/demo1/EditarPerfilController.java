@@ -5,11 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
@@ -26,10 +22,13 @@ public class EditarPerfilController {
     private TextField nombreField;
 
     @FXML
-    private TextField contrasenaField;
+    private PasswordField contrasenaAntiguaField;
 
     @FXML
-    private TextField confirmarContrasenaField;
+    private PasswordField contrasenaField;
+
+    @FXML
+    private PasswordField confirmarContrasenaField;
 
     @FXML
     private TextArea descripcionField;
@@ -54,8 +53,9 @@ public class EditarPerfilController {
         Usuario usuario = UsuarioManager.getUsuarioActual();
         if (usuario != null) {
             nombreField.setText(usuario.getNombre());
-            contrasenaField.setText(usuario.getContrasena());
-            confirmarContrasenaField.setText(usuario.getContrasena());
+            contrasenaAntiguaField.setText("");
+            contrasenaField.setText("");
+            confirmarContrasenaField.setText("");
             descripcionField.setText(usuario.getDescripcion());
             rutaFotoPerfil = usuario.getRutaFotoPerfil();
             if (rutaFotoPerfil != null) {
@@ -80,10 +80,22 @@ public class EditarPerfilController {
     @FXML
     private void guardarCambios() {
         String nombre = nombreField.getText();
+        String contrasenaAntigua = contrasenaAntiguaField.getText();
         String contrasena = contrasenaField.getText();
         String confirmarContrasena = confirmarContrasenaField.getText();
         String descripcion = descripcionField.getText();
-        int idUsuario = UsuarioManager.getUsuarioActual().getId(); // Asume que el ID del usuario es conocido
+        Usuario usuarioActual = UsuarioManager.getUsuarioActual();
+        int idUsuario = usuarioActual.getId();
+
+
+        if (contrasena.isEmpty()) {
+            mostrarError("La contraseña nueva no puede estar vacía.");
+            return;
+        }
+        if (!usuarioActual.getContrasena().equals(contrasenaAntigua)) {
+            mostrarError("Contraseña diferente a la actual");
+            return;
+        }
 
         if (!contrasena.equals(confirmarContrasena)) {
             mostrarError("Contraseñas diferentes");
@@ -102,12 +114,11 @@ public class EditarPerfilController {
             statement.executeUpdate();
 
             // Actualizar la información del usuario en UsuarioManager
-            Usuario usuario = UsuarioManager.getUsuarioActual();
-            if (usuario != null) {
-                usuario.setNombre(nombre);
-                usuario.setContrasena(contrasena);
-                usuario.setRutaFotoPerfil(rutaFotoPerfil);
-                usuario.setDescripcion(descripcion);
+            if (usuarioActual != null) {
+                usuarioActual.setNombre(nombre);
+                usuarioActual.setContrasena(contrasena);
+                usuarioActual.setRutaFotoPerfil(rutaFotoPerfil);
+                usuarioActual.setDescripcion(descripcion);
             }
 
             // Notificar el cambio de la imagen de perfil

@@ -9,17 +9,19 @@
     <padding><Insets bottom="10" left="10" right="10" top="10" /></padding>
     <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
     <TextField fx:id="nombreField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-    <Label text="Contraseña:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-    <PasswordField fx:id="contrasenaField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-    <Label text="Confirmar Contraseña:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-    <PasswordField fx:id="confirmarContrasenaField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-    <Label text="Descripción Personal:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-    <TextArea fx:id="descripcionField" prefColumnCount="10" prefRowCount="3" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-    <Label text="Foto de Perfil:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
-    <Button onAction="#seleccionarImagen" text="Seleccionar Imagen" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-    <ImageView fx:id="fotoPerfilView" fitHeight="90.0" fitWidth="94.0" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-    <Button onAction="#guardarCambios" text="Guardar Cambios" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-    <Button fx:id="botonCerrarSesion" layoutX="562.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleCerrarSesion" prefHeight="26.0" prefWidth="91.0" text="Salir" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+    <Label text="Contraseña Antigua:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+    <PasswordField fx:id="contrasenaAntiguaField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+    <Label text="Contraseña Nueva:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+    <PasswordField fx:id="contrasenaField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+    <Label text="Confirmar Contraseña:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+    <PasswordField fx:id="confirmarContrasenaField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+    <Label text="Descripción Personal:" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+    <TextArea fx:id="descripcionField" prefColumnCount="10" prefRowCount="3" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+    <Label text="Foto de Perfil:" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+    <Button onAction="#seleccionarImagen" text="Seleccionar Imagen" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+    <ImageView fx:id="fotoPerfilView" fitHeight="90.0" fitWidth="94.0" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+    <Button onAction="#guardarCambios" text="Guardar Cambios" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+    <Button fx:id="botonCerrarSesion" layoutX="562.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleCerrarSesion" prefHeight="26.0" prefWidth="91.0" text="Salir" GridPane.columnIndex="2" GridPane.rowIndex="10" />
     <columnConstraints>
         <ColumnConstraints maxWidth="138.0" minWidth="113.0" prefWidth="127.0" />
         <ColumnConstraints maxWidth="144.6" minWidth="119.6" prefWidth="130.6" />
@@ -27,14 +29,14 @@
     </columnConstraints>
     <rowConstraints>
         <RowConstraints />
-      <RowConstraints minHeight="10.0" />
+        <RowConstraints minHeight="10.0" />
         <RowConstraints />
-      <RowConstraints minHeight="10.0" />
+        <RowConstraints minHeight="10.0" />
         <RowConstraints />
-      <RowConstraints minHeight="10.0" />
+        <RowConstraints minHeight="10.0" />
         <RowConstraints />
         <RowConstraints />
-      <RowConstraints minHeight="10.0" />
+        <RowConstraints minHeight="10.0" />
         <RowConstraints />
     </rowConstraints>
 </GridPane>
