@@ -107,10 +107,10 @@ public class HelloController {
             } else if (Objects.equals(usuario.getRol(), "Granjero")) {
                 a.mostrarVentanaTres();
             } else {
-                mostrarError("Usuario no encontrado o contraseña incorrecta.");
+                mostrarError("El usuario con el que está intentando logearse no tiene permisos para acceder a la aplicación, contacte con el CAU para poder solucionarlo.");
             }
         } else {
-            mostrarError("Usuario no encontrado o contraseña incorrecta.");
+            mostrarError("El usuario con el que está intentando logearse no tiene permisos para acceder a la aplicación, contacte con el CAU para poder solucionarlo.");
         }
     }
 

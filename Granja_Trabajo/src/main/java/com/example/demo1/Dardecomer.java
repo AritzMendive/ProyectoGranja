@@ -185,7 +185,7 @@ public class Dardecomer {
                 String alimento = resultSet.getString("Alimento");
                 int cantidad = resultSet.getInt("Cantidad");
 
-                String stockSQL = "SELECT Stock FROM alimentos WHERE Nombre = ?";
+                String stockSQL = "SELECT Stock FROM Alimentos WHERE Nombre = ?";
                 try (PreparedStatement stockStatement = connection.prepareStatement(stockSQL)) {
                     stockStatement.setString(1, alimento);
                     ResultSet stockResult = stockStatement.executeQuery();
@@ -206,7 +206,7 @@ public class Dardecomer {
                     String alimento = resultSet.getString("Alimento");
                     int cantidad = resultSet.getInt("Cantidad");
 
-                    String updateSQL = "UPDATE alimentos SET Stock = Stock - ? WHERE Nombre = ?";
+                    String updateSQL = "UPDATE Alimentos SET Stock = Stock - ? WHERE Nombre = ?";
                     try (PreparedStatement updateStatement = connection.prepareStatement(updateSQL)) {
                         updateStatement.setInt(1, cantidad);
                         updateStatement.setString(2, alimento);

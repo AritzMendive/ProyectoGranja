@@ -69,14 +69,14 @@ public class AnadirAnimal {
         }
 
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://monorail.proxy.rlwy.net:55810/railway", "root", "MNvVtHFDEuiIcdlCusLWfBxfFqPvemBP")) {
-            String updateSQL = "UPDATE alimentos SET Stock = ? WHERE Nombre = ?";
+            String updateSQL = "UPDATE Alimentos SET Stock = ? WHERE Nombre = ?";
             try (PreparedStatement statement = connection.prepareStatement(updateSQL)) {
                 statement.setInt(1, cantidad);
                 statement.setString(2, nombre);
                 int filasActualizadas = statement.executeUpdate();
                 if (filasActualizadas > 0) {
                     mostrarMensaje("Stock de " + nombre + " actualizado correctamente.");
-                    cargarAlimentos(); // Recargar la lista de alimentos
+                    cargarAlimentos();
                 } else {
                     mostrarError("No se encontró el alimento con nombre " + nombre + ".");
                 }
@@ -112,7 +112,7 @@ public class AnadirAnimal {
         AlimentacionListView.getItems().clear(); // Limpiar la lista antes de actualizar
 
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://monorail.proxy.rlwy.net:55810/railway", "root", "MNvVtHFDEuiIcdlCusLWfBxfFqPvemBP")) {
-            String selectSQL = "SELECT Nombre, Stock FROM alimentos";
+            String selectSQL = "SELECT Nombre, Stock FROM Alimentos";
             try (PreparedStatement statement = connection.prepareStatement(selectSQL)) {
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next()) {
