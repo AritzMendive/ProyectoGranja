@@ -92,7 +92,7 @@ public class AlimentosSuministrosController {
     private boolean insertarAlimentoEnBD(String nombre, int stock, int precio) throws SQLException {
         ConexionBBDD conexion = new ConexionBBDD();
 
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/granja", "root", "root")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://monorail.proxy.rlwy.net:55810/railway", "root", "MNvVtHFDEuiIcdlCusLWfBxfFqPvemBP")) {
             String insertSQL = "INSERT INTO alimentos (Nombre, Stock, Precio) VALUES (?, ?, ?)";
             //Se hace la insercion en la base de datos.
             try (PreparedStatement statement = connection.prepareStatement(insertSQL)) {

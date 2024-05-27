@@ -12,7 +12,7 @@ public class ConexionBBDD {
     Statement statement;
 
     public ConexionBBDD() throws SQLException {
-        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/granja", "root", "root");
+        connection = DriverManager.getConnection("jdbc:mysql://monorail.proxy.rlwy.net:55810/railway", "root", "MNvVtHFDEuiIcdlCusLWfBxfFqPvemBP");
         statement = connection.createStatement();
     }
 

@@ -97,7 +97,7 @@ public class AlimentosTablas implements Initializable  {
     public void refrescarDatos() {
         listaAlimentos.clear(); // Limpiar la lista antes de actualizar
 
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/granja", "root", "root")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://monorail.proxy.rlwy.net:55810/railway", "root", "MNvVtHFDEuiIcdlCusLWfBxfFqPvemBP")) {
             String selectSQL = "SELECT * FROM alimentos";
             try (PreparedStatement statement = connection.prepareStatement(selectSQL)) {
                 ResultSet resultSet = statement.executeQuery();

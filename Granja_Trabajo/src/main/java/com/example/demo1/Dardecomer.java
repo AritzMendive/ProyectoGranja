@@ -41,7 +41,7 @@ public class Dardecomer {
 
     public Dardecomer() {
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/granja", "root", "root");
+            connection = DriverManager.getConnection("jdbc:mysql://monorail.proxy.rlwy.net:55810/railway", "root", "MNvVtHFDEuiIcdlCusLWfBxfFqPvemBP");
         } catch (SQLException e) {
             mostrarError("Error al conectar con la base de datos: " + e.getMessage());
             e.printStackTrace();
